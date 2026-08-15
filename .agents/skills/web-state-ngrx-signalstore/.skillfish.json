@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "name": "web-state-ngrx-signalstore",
+  "owner": "agents-inc",
+  "repo": "skills",
+  "path": "dist/plugins/web-state-ngrx-signalstore/skills/web-state-ngrx-signalstore",
+  "branch": "main",
+  "sha": "53a7f3afe197f9f261e3c9841f94753569f9b040",
+  "source": "manual"
+}
