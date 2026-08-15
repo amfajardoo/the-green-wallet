@@ -2,6 +2,38 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.1.2.
 
+## Spec Kit
+
+This repository uses [GitHub Spec Kit](https://github.com/github/spec-kit) `v0.16.4` with the Codex skills integration. The setup adds Spec Kit project files under `.specify/` and skills named `speckit-*` under `.agents/skills`.
+
+Install the pinned CLI version with [uv](https://docs.astral.sh/uv/):
+
+```powershell
+uv tool install specify-cli --force --from git+https://github.com/github/spec-kit.git@v0.16.4
+```
+
+From the repository root, initialize or refresh the project integration:
+
+```powershell
+specify init . --integration codex --script ps
+```
+
+Verify the installation:
+
+```powershell
+specify version
+specify integration status --json
+```
+
+If the global `specify` executable cannot be started by the local `uv` installation, run the same commands through the pinned temporary runner:
+
+```powershell
+uvx --from git+https://github.com/github/spec-kit.git@v0.16.4 specify version
+uvx --from git+https://github.com/github/spec-kit.git@v0.16.4 specify integration status --json
+```
+
+The generated constitution template is intentionally left unfilled until the project's governance principles are defined.
+
 ## Development server
 
 To start a local development server, run:
