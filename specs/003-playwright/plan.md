@@ -132,7 +132,7 @@ the shared runner guarantees.
 5. Update `README.md` with the e2e commands, Chromium prerequisite, local endpoint
    override, and failure-report workflow.
 6. Run the browser quickstart plus `pnpm exec ng build`, `pnpm exec ng test --no-watch`,
-   and `pnpm exec biome check .`; verify generated directories stay ignored and no
+   and `pnpm check`; verify generated directories stay ignored and no
    application source or financial behavior changed.
 
 ## Post-Design Constitution Re-check

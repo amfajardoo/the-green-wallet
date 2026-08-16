@@ -99,7 +99,7 @@
 
 - [ ] T016 [P] Run `pnpm exec ng build` against `src/styles.css`, `src/styles/theme.css`, and the updated application shell to confirm Angular SSR compilation.
 - [ ] T017 [P] Run `pnpm exec ng test --no-watch` against the existing Angular test suite, including `src/app/app.spec.ts`.
-- [ ] T018 [P] Run `pnpm exec biome check .` against the changed source and specification files and resolve any diagnostics caused by the implementation.
+- [ ] T018 [P] Run `pnpm check` against the application source under `src/` and resolve any diagnostics caused by the implementation.
 - [ ] T019 Run the non-browser steps in `specs/001-ui-theming/quickstart.md` and record that contrast, axe, keyboard, and browser validation are deferred to `003-playwright`.
 - [ ] T020 Confirm that `src/styles/theme.css`, `src/styles.css`, and `src/app/app.html` contain no persistence, network-font, browser-global, or financial-domain logic.
 
@@ -134,7 +134,7 @@
 ```text
 Task: Run pnpm exec ng build against src/styles.css and src/styles/theme.css
 Task: Run pnpm exec ng test --no-watch against src/app/app.spec.ts
-Task: Run pnpm exec biome check . against the changed files
+Task: Run pnpm check against src/
 ```
 
 ---

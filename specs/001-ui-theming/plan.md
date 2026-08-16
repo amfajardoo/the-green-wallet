@@ -16,7 +16,7 @@ Create the first project-wide visual foundation for TheGreenWallet using the exi
 
 **Storage**: N/A. Theme tokens are static CSS decisions and do not contain user or financial data.
 
-**Testing**: Angular/Vitest unit tests where behavior is relevant, `pnpm exec ng build`, `pnpm exec ng test --no-watch`, and `pnpm exec biome check .`. Automated contrast, axe, keyboard, and browser validation are deferred to the later `003-playwright` feature.
+**Testing**: Angular/Vitest unit tests where behavior is relevant, `pnpm exec ng build`, `pnpm exec ng test --no-watch`, and `pnpm check` against `src/`. Automated contrast, axe, keyboard, and browser validation are deferred to the later `003-playwright` feature.
 
 **Target Platform**: Angular SSR web application with browser hydration; responsive viewport range from 320 CSS pixels through 1280 CSS pixels.
 

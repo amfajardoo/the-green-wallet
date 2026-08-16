@@ -13,7 +13,7 @@ Run the existing project checks:
 ```powershell
 pnpm exec ng build
 pnpm exec ng test --no-watch
-pnpm exec biome check .
+pnpm check
 ```
 
 Expected result: the Angular SSR build completes, the existing unit-test suite passes, and Biome reports no unexplained diagnostics.

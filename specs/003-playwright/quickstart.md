@@ -73,7 +73,7 @@ After the foundation is implemented, run:
 pnpm e2e
 pnpm exec ng build
 pnpm exec ng test --no-watch
-pnpm exec biome check .
+pnpm check
 git diff --check
 git status --short
 ```

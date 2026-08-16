@@ -106,7 +106,7 @@ maintenance concern can be implemented and reviewed independently.
 - [X] T020 [P] Run `pnpm e2e` from a clean local state and record the smoke result against `specs/003-playwright/quickstart.md`.
 - [X] T021 [P] Run `pnpm exec ng build` for `angular.json` and `src/` and confirm the Angular SSR build remains unchanged by the browser foundation.
 - [X] T022 [P] Run `pnpm exec ng test --no-watch` for `src/**/*.spec.ts` and confirm the existing unit suite remains green.
-- [ ] T023 [P] Run `pnpm exec biome check .` for `package.json`, `playwright.config.ts`, `e2e/`, and changed documentation files, resolving any diagnostics.
+- [X] T023 [P] Run `pnpm check` against the application source under `src/`, resolving any diagnostics without expanding Biome's scope to repository tooling, e2e files, or documentation.
 - [X] T024 Run `git diff --check` and `git status --short` for `.gitignore`, `playwright-report/`, and `test-results/` after browser execution, confirming generated reports, traces, screenshots, videos, profiles, and binaries are not tracked.
 - [X] T025 Reconcile delivered paths and commands with `specs/003-playwright/spec.md`, `specs/003-playwright/plan.md`, and `specs/003-playwright/quickstart.md` without changing the out-of-scope boundaries.
 
@@ -143,7 +143,7 @@ maintenance concern can be implemented and reviewed independently.
 Task: Run pnpm e2e
 Task: Run pnpm exec ng build
 Task: Run pnpm exec ng test --no-watch
-Task: Run pnpm exec biome check .
+Task: Run pnpm check against src/
 ```
 
 ## Implementation Strategy
