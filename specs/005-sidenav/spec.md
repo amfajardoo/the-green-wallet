@@ -23,6 +23,9 @@ the larger layouts and gives users immediate awareness of the available product 
 verify that the side navigation is visible, and select an available destination without
 using a menu trigger.
 
+When the application has no approved destinations yet, the same test verifies that the
+visible navigation remains structurally valid without rendering speculative or dead links.
+
 **Acceptance Scenarios**:
 
 1. **Given** the viewport is 768 CSS pixels wide, **When** the application loads, **Then**
@@ -47,6 +50,9 @@ still providing access to every available top-level destination.
 
 **Independent Test**: Open the application at 320 and 767 CSS pixels, verify that the
 navigation is hidden initially, open it with the menu control, and select a destination.
+
+When the destination catalog is empty, the test verifies that opening the menu does not
+invent an unavailable destination and that the drawer can still be dismissed.
 
 **Acceptance Scenarios**:
 
@@ -105,6 +111,8 @@ tablet or desktop side navigation.
   content unusable at the narrowest supported tablet width.
 - A destination that is not implemented or available MUST NOT appear as a dead or
   misleading actionable link.
+- An empty destination catalog MUST render a valid navigation shell without dead links,
+  false active state, or misleading empty actions.
 - Reduced-motion preferences MUST not prevent the menu from opening, closing, or being
   understood.
 
@@ -158,11 +166,16 @@ tablet or desktop side navigation.
   motion is preferred.
 - **FR-015**: The navigation MUST render only available, user-facing destinations and
   MUST not expose dead links for future or unimplemented product areas.
+- **FR-016**: The implemented navigation MUST be included in automated AXE validation,
+  and the feature MUST resolve all serious or critical accessibility violations reported
+  for the sidenav journeys before completion.
 
 ### Navigation Content
 
 - The navigation MUST use a single level of available top-level destinations in this
   feature.
+- The initial destination catalog MAY be empty because application routes are not yet
+  defined; this feature MUST NOT create routes or speculative destinations.
 - The destination catalog MUST be shared by the persistent and mobile presentations so
   that the two layouts do not drift in labels, order, or availability.
 - The feature MUST preserve the existing route destination behavior; it changes access
@@ -198,6 +211,8 @@ tablet or desktop side navigation.
   horizontal scrolling or obscures the primary page content.
 - **SC-007**: The navigation introduces no persisted menu state, remote data transfer, or
   financial-domain mutation.
+- **SC-008**: The sidenav journeys produce zero serious or critical AXE violations at
+  320, 767, 768, 1023, 1024, and 1280 CSS pixel widths.
 
 ## Assumptions
 
@@ -205,6 +220,8 @@ tablet or desktop side navigation.
   orientation changes are handled through the resulting viewport width.
 - The boundaries of 768 and 1024 CSS pixels align with the project's existing responsive
   scale and are the single source of truth for this feature.
+- No application routes are defined for this feature; the destination catalog starts
+  empty and will be extended by future approved route specifications.
 - The initial mobile menu is closed on every new application session and after a page
   refresh.
 - The application has one primary navigation region; additional navigation regions, if
