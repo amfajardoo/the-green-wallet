@@ -78,13 +78,42 @@ ng test
 
 ## Running end-to-end tests
 
-For end-to-end (e2e) testing, run:
+This project uses Playwright Test `1.62.1` with Chromium as the initial browser target.
+Install the browser once after installing dependencies:
 
-```bash
-ng e2e
+```powershell
+pnpm e2e:install
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Run the smoke suite from the repository root:
+
+```powershell
+pnpm e2e
+```
+
+The command starts the Angular development server automatically and reuses an existing
+local server when one is already listening on `http://127.0.0.1:4200`. To point the
+suite at another already-running local endpoint:
+
+```powershell
+$env:PLAYWRIGHT_BASE_URL = 'http://127.0.0.1:4200'
+pnpm e2e
+Remove-Item Env:PLAYWRIGHT_BASE_URL
+```
+
+Useful debugging commands:
+
+```powershell
+pnpm e2e:headed
+pnpm e2e:report
+```
+
+Failure screenshots and traces are written to the ignored `test-results/` directory;
+the HTML report is written to the ignored `playwright-report/` directory. Browser tests
+use isolated contexts and must not depend on personal profiles, persistent storage, or
+execution order. Future account and financial journeys belong in feature-owned files
+under `e2e/`, use scenario-focused names, own their setup, and prefer user-facing
+locators such as roles and labels over CSS implementation details.
 
 ## Additional Resources
 

@@ -57,23 +57,7 @@ As a maintainer, I want each browser test to run in an isolated and repeatable c
 
 ---
 
-### User Story 4 - Make Playwright Skills Available to Maintainers (Priority: P1)
-
-As a maintainer, I want the project's Playwright skills to be installed and discoverable alongside the existing project skills so that contributors and coding agents can use consistent browser-testing guidance.
-
-**Why this priority**: The browser runner is more useful when the people maintaining the tests have a shared, repository-level set of Playwright practices and commands.
-
-**Independent Test**: From the project root, run `playwright-cli install --skills`, inspect the generated skill location, and verify that the Playwright skills are available without removing or overwriting the existing Angular, Spec Kit, and project skills.
-
-**Acceptance Scenarios**:
-
-1. **Given** the Playwright CLI is available, **When** a maintainer runs `playwright-cli install --skills` from the project root, **Then** the Playwright skills are installed in the project's canonical skill location and can be discovered by supported coding agents.
-2. **Given** the project already contains Angular, Spec Kit, and other approved skills, **When** the Playwright skills are installed, **Then** unrelated skills and project configuration remain unchanged.
-3. **Given** the skill installation is run again, **When** the installation completes, **Then** it does not create conflicting duplicate copies or require manual cleanup before contributors can use the skills.
-
----
-
-### User Story 5 - Add Future User Journeys Safely (Priority: P2)
+### User Story 4 - Add Future User Journeys Safely (Priority: P2)
 
 As a maintainer, I want a clear browser-test foundation so that future specs such as account setup, transfers, and card payments can add end-to-end scenarios without rebuilding the test environment.
 
@@ -95,7 +79,6 @@ As a maintainer, I want a clear browser-test foundation so that future specs suc
 - Tests must remain meaningful when the application is rendered with an empty in-memory session.
 - Keyboard navigation and accessible element identification must remain possible for future user-journey tests.
 - Browser binaries and generated reports must not be committed as source artifacts.
-- Playwright skills must remain discoverable after dependency installation, a fresh checkout, and repeated setup.
 
 ## Requirements *(mandatory)*
 
@@ -114,14 +97,10 @@ As a maintainer, I want a clear browser-test foundation so that future specs suc
 - **FR-011**: The test foundation MUST be usable without a backend, third-party service, authentication flow, or persistent application data.
 - **FR-012**: The test foundation MUST keep generated browser binaries, traces, screenshots, videos, and reports outside the tracked source artifacts unless a future policy explicitly requires otherwise.
 - **FR-013**: Future feature specifications MUST be able to add browser scenarios without changing the shared runner's isolation and reporting guarantees.
-- **FR-014**: The project setup MUST document and support running `playwright-cli install --skills` from the repository root.
-- **FR-015**: The Playwright skill installation MUST place the skills in the project's canonical skill location and MUST preserve existing Angular, Spec Kit, and project-specific skills.
-- **FR-016**: Repeating the Playwright skill installation MUST be idempotent or produce one clearly canonical copy without conflicting duplicates.
 
 ### Technical Boundaries
 
 - Playwright installation, browser selection, runner configuration, application startup, package scripts, and test directory conventions will be defined during planning.
-- The Playwright skill setup will use the exact command `playwright-cli install --skills`; its generated location, verification, and conflict handling will be defined during planning.
 - The initial smoke journey validates application availability and basic usability; business behavior for account setup belongs to `004-account-setup`.
 - CI workflow integration, visual regression snapshots, cross-browser coverage, external-service environments, and performance testing are out of scope for this feature.
 - Accessibility assertions may be added to individual feature scenarios while the shared foundation remains compatible with the project's accessibility requirements.
@@ -143,7 +122,6 @@ As a maintainer, I want a clear browser-test foundation so that future specs suc
 - **SC-004**: 100% of failed runs preserve enough configured evidence to diagnose failures occurring during navigation, rendering, and interaction.
 - **SC-005**: A future account-setup journey can be added without modifying the shared isolation and reporting guarantees.
 - **SC-006**: The initial browser-test foundation does not add tracked browser binaries, temporary profiles, or generated reports to the repository.
-- **SC-007**: After running `playwright-cli install --skills`, supported coding agents can discover the Playwright skills and all pre-existing approved project skills remain available.
 
 ## Assumptions
 
@@ -153,5 +131,3 @@ As a maintainer, I want a clear browser-test foundation so that future specs suc
 - The application does not persist account data in this phase, so tests will create all required state within their own session.
 - The existing project test framework remains responsible for unit tests; this feature adds browser-level coverage without replacing existing validation commands.
 - The exact test command name, browser launch settings, and failure artifact retention policy will be finalized during planning.
-- The Playwright CLI is available to maintainers when the skill-installation setup is performed.
-- Installing skills is a repository-tooling operation and does not add Playwright skill content to the production application bundle.
