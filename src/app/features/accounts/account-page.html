@@ -1,0 +1,190 @@
+<section class="account-page" aria-labelledby="account-page-title">
+	<header class="account-page-header">
+		<div>
+			<p class="eyebrow">Session workspace / accounts</p>
+			<h1 id="account-page-title">Give your money a clear place to live.</h1>
+			<p class="account-page-intro">
+				Create the accounts you use today. Their balances stay explicit, separate by currency,
+				and available only during this session.
+			</p>
+		</div>
+		<div class="session-badge">
+			<span class="session-badge-dot" aria-hidden="true"></span>
+			<span>Session only</span>
+		</div>
+	</header>
+
+	<div class="account-layout">
+		<section class="account-form-card" aria-labelledby="account-form-title">
+			<div class="card-heading">
+				<div>
+					<p class="eyebrow">01 / Add an account</p>
+					<h2 id="account-form-title">Start with the details</h2>
+				</div>
+				<span class="optional-note">Opening balance optional</span>
+			</div>
+
+			<form (submit)="onSubmit($event)" novalidate>
+				<div class="field-group">
+					<label for="account-name">Account name</label>
+					<input
+						id="account-name"
+						type="text"
+						autocomplete="off"
+						placeholder="e.g. Main checking"
+						[formField]="accountForm.name"
+						[attr.aria-invalid]="accountForm.name().invalid() ? 'true' : undefined"
+						[attr.aria-describedby]="
+							accountForm.name().touched() && accountForm.name().errors().length > 0
+								? 'account-name-error'
+								: undefined
+						"
+					/>
+					@if (accountForm.name().touched() && accountForm.name().errors().length > 0) {
+						<p id="account-name-error" class="field-error" role="alert">
+							{{ accountForm.name().errors()[0].message }}
+						</p>
+					}
+				</div>
+
+				<div class="field-group">
+					<label for="account-type">Account type</label>
+					<select
+						id="account-type"
+						[formField]="accountForm.type"
+						[attr.aria-invalid]="accountForm.type().invalid() ? 'true' : undefined"
+						[attr.aria-describedby]="
+							accountForm.type().touched() && accountForm.type().errors().length > 0
+								? 'account-type-error'
+								: undefined
+						"
+					>
+						<option value="">Select an account type</option>
+						@for (type of accountTypes; track type) {
+							<option [value]="type">{{ typeLabels[type] }}</option>
+						}
+					</select>
+					<p class="field-hint">Choose how this account behaves in your financial picture.</p>
+					@if (accountForm.type().touched() && accountForm.type().errors().length > 0) {
+						<p id="account-type-error" class="field-error" role="alert">
+							{{ accountForm.type().errors()[0].message }}
+						</p>
+					}
+				</div>
+
+				<div class="field-group">
+					<label for="account-currency">Currency</label>
+					<select
+						id="account-currency"
+						[formField]="accountForm.currency"
+						[attr.aria-invalid]="accountForm.currency().invalid() ? 'true' : undefined"
+						[attr.aria-describedby]="
+							accountForm.currency().touched() && accountForm.currency().errors().length > 0
+								? 'account-currency-error'
+								: undefined
+						"
+					>
+						<option value="">Select a currency</option>
+						@for (currency of currencies; track currency) {
+							<option [value]="currency">{{ currency }}</option>
+						}
+					</select>
+					<p class="field-hint">COP accepts whole amounts; USD accepts up to two decimals.</p>
+					@if (accountForm.currency().touched() && accountForm.currency().errors().length > 0) {
+						<p id="account-currency-error" class="field-error" role="alert">
+							{{ accountForm.currency().errors()[0].message }}
+						</p>
+					}
+				</div>
+
+				<div class="field-group">
+					<label for="opening-balance">Opening balance <span class="optional-field-label">(optional)</span></label>
+					<input
+						id="opening-balance"
+						type="text"
+						inputmode="decimal"
+						autocomplete="off"
+						placeholder="0"
+						[formField]="accountForm.openingBalance"
+						[attr.aria-invalid]="accountForm.openingBalance().invalid() ? 'true' : undefined"
+						[attr.aria-describedby]="
+							accountForm.openingBalance().touched() && accountForm.openingBalance().errors().length > 0
+								? 'opening-balance-error'
+								: 'opening-balance-hint'
+						"
+					/>
+					<p id="opening-balance-hint" class="field-hint">
+						Leave empty to start at zero. Negative values are not supported yet.
+					</p>
+					@if (accountForm.openingBalance().touched() && accountForm.openingBalance().errors().length > 0) {
+						<p id="opening-balance-error" class="field-error" role="alert">
+							{{ accountForm.openingBalance().errors()[0].message }}
+						</p>
+					}
+				</div>
+
+				@if (submissionError(); as error) {
+					<p class="form-error" role="alert">{{ error.message }}</p>
+				}
+
+				<button class="primary-action" type="submit">Create account</button>
+			</form>
+		</section>
+
+		<section class="account-list-card" aria-labelledby="account-list-title" aria-live="polite">
+			<div class="card-heading">
+				<div>
+					<p class="eyebrow">02 / Review your accounts</p>
+					<h2 id="account-list-title">Your current session</h2>
+				</div>
+				<span class="account-count">{{ store.accountCount() }} active</span>
+			</div>
+
+			<div class="summary-strip">
+				<div>
+					<span class="summary-label">COP available</span>
+					<strong>{{ summaryAmount('COP', 'available') }}</strong>
+				</div>
+				<div>
+					<span class="summary-label">USD available</span>
+					<strong>{{ summaryAmount('USD', 'available') }}</strong>
+				</div>
+				<div>
+					<span class="summary-label">Card liabilities</span>
+					<strong>{{ summaryAmount('COP', 'outstanding') }} · {{ summaryAmount('USD', 'outstanding') }}</strong>
+				</div>
+			</div>
+
+			@if (!hasAccounts()) {
+				<div class="list-empty">
+					<span class="list-empty-mark" aria-hidden="true">+</span>
+					<h3>No accounts yet</h3>
+					<p>Your new account will appear here as soon as it is created.</p>
+				</div>
+			} @else {
+				<ul class="account-list">
+					@for (account of store.entities(); track account.id) {
+						<li class="account-list-item">
+							<div class="account-list-icon" [class.liability-icon]="account.type === 'credit-card'" aria-hidden="true">
+								{{ account.type === 'credit-card' ? 'CC' : 'A' }}
+							</div>
+							<div class="account-list-content">
+								<div class="account-list-topline">
+									<h3>{{ account.name }}</h3>
+									<span class="currency-tag">{{ account.currency }}</span>
+								</div>
+								<p>{{ accountTypeLabel(account.type) }} · {{ balanceLabel(account) }}</p>
+							</div>
+							<strong class="account-balance">{{ formatBalance(account) }}</strong>
+						</li>
+					}
+				</ul>
+			}
+
+			<p class="session-note">
+				<span class="session-note-icon" aria-hidden="true">↗</span>
+				Refreshing this page clears the session workspace. Persistence comes later.
+			</p>
+		</section>
+	</div>
+</section>
