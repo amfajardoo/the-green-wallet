@@ -28,6 +28,6 @@ At mobile width, activate Menu, verify focus moves to the drawer, then close wit
 the close button, and the backdrop. Focus must return to Menu. The Accounts link must be
 available in both presentations and must expose active route semantics.
 
-No browser runner is configured after the Playwright foundation was removed. The component
-tests cover the high-risk keyboard/focus behavior and leave the six-width browser/AXE
-journeys ready for a future approved runner integration.
+No browser runner is configured in the repository. The component tests cover the high-risk
+keyboard/focus behavior and leave the six-width browser/AXE journeys ready for a future
+approved runner integration.

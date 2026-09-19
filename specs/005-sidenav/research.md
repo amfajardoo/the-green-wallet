@@ -110,8 +110,8 @@ provide isolated contexts and failure evidence.
 
 **Decision**: Keep the feature ready for automated accessibility scans and cover semantic
 landmarks, keyboard behavior, focus movement, and active-state structure in component tests.
-The repository currently has no browser runner after Playwright removal, so viewport scans
-remain a documented follow-up integration rather than a hidden dependency.
+The repository currently has no browser runner, so viewport scans remain a documented
+follow-up integration rather than a hidden dependency.
 
 **Rationale**: The project constitution requires applicable automated accessibility checks,
 and the implementation is structured so a future browser runner can scan all six required
