@@ -12,8 +12,8 @@
 
 **Purpose**: Establish the theme source without changing dependencies or application behavior.
 
-- [ ] T001 Create the theme stylesheet entry structure in `src/styles/theme.css` according to the project plan, including sections for primitives, semantic roles, typography, and interaction tokens.
-- [ ] T002 [P] Document the existing Tailwind/PostCSS integration points in `package.json`, `.postcssrc.json`, and `src/styles.css` before changing them, confirming that no new runtime dependency is required.
+- [X] T001 Create the theme stylesheet entry structure in `src/styles/theme.css` according to the project plan, including sections for primitives, semantic roles, typography, and interaction tokens.
+- [X] T002 [P] Document the existing Tailwind/PostCSS integration points in `package.json`, `.postcssrc.json`, and `src/styles.css` before changing them, confirming that no new runtime dependency is required.
 
 ---
 
@@ -23,10 +23,10 @@
 
 **⚠️ CRITICAL**: Complete this phase before user-story-specific styling.
 
-- [ ] T003 Define the primitive neutral, brand, positive, negative, warning, information, liability, and focus values in `src/styles/theme.css` using the selected design-model values.
-- [ ] T004 Define the semantic surface, content, border, brand, focus, financial-state, and supporting-surface tokens in `src/styles/theme.css`, keeping component usage independent from raw hue names.
-- [ ] T005 Define typography roles, spacing, sizing, radius, elevation, and base interaction conventions in `src/styles/theme.css` without adding component-specific selectors.
-- [ ] T006 Import `src/styles/theme.css` from `src/styles.css` while preserving the existing Tailwind CSS import and Angular global-style entry point.
+- [X] T003 Define the primitive neutral, brand, positive, negative, warning, information, liability, and focus values in `src/styles/theme.css` using the selected design-model values.
+- [X] T004 Define the semantic surface, content, border, brand, focus, financial-state, and supporting-surface tokens in `src/styles/theme.css`, keeping component usage independent from raw hue names.
+- [X] T005 Define typography roles, spacing, sizing, radius, elevation, and base interaction conventions in `src/styles/theme.css` without adding component-specific selectors.
+- [X] T006 Import `src/styles/theme.css` from `src/styles.css` while preserving the existing Tailwind CSS import and Angular global-style entry point.
 
 **Checkpoint**: The application can build with the theme source loaded and no application component needs to define the shared token vocabulary itself.
 
@@ -40,9 +40,9 @@
 
 ### Implementation for User Story 1
 
-- [ ] T007 [US1] Replace Angular starter color variables, gradients, and font declarations in `src/app/app.html` with the shared semantic theme roles from `src/styles/theme.css`.
-- [ ] T008 [US1] Apply the shared surface, content, typography, spacing, and component-pattern utilities to the application shell in `src/app/app.html` while preserving the existing router outlet and current app title behavior.
-- [ ] T009 [US1] Remove obsolete starter-only style declarations from `src/app/app.html` and keep `src/app/app.css` free of duplicated global theme tokens.
+- [X] T007 [US1] Replace Angular starter color variables, gradients, and font declarations in `src/app/app.html` with the shared semantic theme roles from `src/styles/theme.css`.
+- [X] T008 [US1] Apply the shared surface, content, typography, spacing, and component-pattern utilities to the application shell in `src/app/app.html` while preserving the existing router outlet and current app title behavior.
+- [X] T009 [US1] Remove obsolete starter-only style declarations from `src/app/app.html` and keep `src/app/app.css` free of duplicated global theme tokens.
 
 **Checkpoint**: User Story 1 is complete when the application shell is visibly consistent and no longer depends on Angular starter palette values.
 
@@ -56,8 +56,8 @@
 
 ### Implementation for User Story 2
 
-- [ ] T010 [US2] Add the positive, negative, warning, information, and credit-liability semantic role mappings and their supporting surfaces to `src/styles/theme.css` according to `data-model.md`.
-- [ ] T011 [US2] Add concise usage comments for financial-state roles in `src/styles/theme.css`, documenting that components must pair state color with text, structure, or icon meaning.
+- [X] T010 [US2] Add the positive, negative, warning, information, and credit-liability semantic role mappings and their supporting surfaces to `src/styles/theme.css` according to `data-model.md`.
+- [X] T011 [US2] Add concise usage comments for financial-state roles in `src/styles/theme.css`, documenting that components must pair state color with text, structure, or icon meaning.
 
 **Checkpoint**: User Story 2 is complete when future account and transaction surfaces can express financial meaning through named roles rather than raw color choices.
 
@@ -71,8 +71,8 @@
 
 ### Implementation for User Story 3
 
-- [ ] T012 [US3] Apply mobile-first responsive utility composition and safe wrapping rules to the shell layout in `src/app/app.html` for 320, 768, and 1280 CSS pixel widths.
-- [ ] T013 [US3] Add static focus-visible, disabled, loading, invalid, and reduced-motion-safe conventions to `src/styles/theme.css` without introducing a runtime theme service or browser global.
+- [X] T012 [US3] Apply mobile-first responsive utility composition and safe wrapping rules to the shell layout in `src/app/app.html` for 320, 768, and 1280 CSS pixel widths.
+- [X] T013 [US3] Add static focus-visible, disabled, loading, invalid, and reduced-motion-safe conventions to `src/styles/theme.css` without introducing a runtime theme service or browser global.
 
 **Checkpoint**: User Story 3 is complete when the shell uses the responsive and interaction conventions and remains compatible with Angular SSR and hydration.
 
@@ -86,8 +86,8 @@
 
 ### Implementation for User Story 4
 
-- [ ] T014 [US4] Organize and document the token sections in `src/styles/theme.css` so future contributors can distinguish primitives, semantic roles, typography roles, and interaction conventions.
-- [ ] T015 [US4] Reconcile the implemented theme vocabulary with `specs/001-ui-theming/data-model.md` and `specs/001-ui-theming/quickstart.md`, updating only documentation that describes the delivered token contract.
+- [X] T014 [US4] Organize and document the token sections in `src/styles/theme.css` so future contributors can distinguish primitives, semantic roles, typography roles, and interaction conventions.
+- [X] T015 [US4] Reconcile the implemented theme vocabulary with `specs/001-ui-theming/data-model.md` and `specs/001-ui-theming/quickstart.md`, updating only documentation that describes the delivered token contract.
 
 **Checkpoint**: User Story 4 is complete when the theme is a reusable project convention rather than a collection of unexplained values.
 
@@ -97,11 +97,11 @@
 
 **Purpose**: Validate the theme integration within the current scope and record deferred browser validation.
 
-- [ ] T016 [P] Run `pnpm exec ng build` against `src/styles.css`, `src/styles/theme.css`, and the updated application shell to confirm Angular SSR compilation.
-- [ ] T017 [P] Run `pnpm exec ng test --no-watch` against the existing Angular test suite, including `src/app/app.spec.ts`.
-- [ ] T018 [P] Run `pnpm check` against the application source under `src/` and resolve any diagnostics caused by the implementation.
-- [ ] T019 Run the non-browser steps in `specs/001-ui-theming/quickstart.md` and record that contrast, automated accessibility, keyboard, and browser validation remain future quality work.
-- [ ] T020 Confirm that `src/styles/theme.css`, `src/styles.css`, and `src/app/app.html` contain no persistence, network-font, browser-global, or financial-domain logic.
+- [X] T016 [P] Run `pnpm exec ng build` against `src/styles.css`, `src/styles/theme.css`, and the updated application shell to confirm Angular SSR compilation.
+- [X] T017 [P] Run `pnpm exec ng test --no-watch` against the existing Angular test suite, including `src/app/app.spec.ts`.
+- [X] T018 [P] Run `pnpm check` against the application source under `src/` and resolve any diagnostics caused by the implementation.
+- [X] T019 Run the non-browser steps in `specs/001-ui-theming/quickstart.md` and record that contrast, automated accessibility, keyboard, and browser validation remain future quality work.
+- [X] T020 Confirm that `src/styles/theme.css`, `src/styles.css`, and `src/app/app.html` contain no persistence, network-font, browser-global, or financial-domain logic.
 
 ---
 

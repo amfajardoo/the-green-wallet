@@ -1,0 +1,131 @@
+@theme {
+	--color-surface: var(--surface);
+	--color-surface-subtle: var(--surface-subtle);
+	--color-surface-elevated: var(--surface-elevated);
+	--color-surface-brand: var(--surface-brand);
+	--color-content: var(--content);
+	--color-content-muted: var(--content-muted);
+	--color-content-inverse: var(--content-inverse);
+	--color-border: var(--border);
+	--color-border-strong: var(--border-strong);
+	--color-brand: var(--brand);
+	--color-brand-hover: var(--brand-hover);
+	--color-brand-subtle: var(--brand-subtle);
+	--color-positive: var(--positive);
+	--color-positive-subtle: var(--positive-subtle);
+	--color-negative: var(--negative);
+	--color-negative-subtle: var(--negative-subtle);
+	--color-warning: var(--warning);
+	--color-warning-subtle: var(--warning-subtle);
+	--color-info: var(--info);
+	--color-info-subtle: var(--info-subtle);
+	--color-liability: var(--liability);
+	--color-liability-subtle: var(--liability-subtle);
+	--color-focus: var(--focus);
+	--font-sans: var(--font-body);
+	--font-mono: var(--font-numeric);
+	--shadow-card: 0 1.25rem 3rem rgb(15 23 42 / 8%);
+	--shadow-card-hover: 0 1.5rem 3.5rem rgb(15 23 42 / 12%);
+}
+
+:root {
+	color-scheme: light;
+
+	/* Primitive palette: semantic roles below are the public theme contract. */
+	--forest-950: #12372a;
+	--forest-900: #164e3b;
+	--forest-800: #065f46;
+	--forest-700: #047857;
+	--leaf-100: #d1fae5;
+	--leaf-50: #ecfdf5;
+	--slate-950: #0f172a;
+	--slate-700: #334155;
+	--slate-600: #475569;
+	--slate-400: #94a3b8;
+	--slate-200: #e2e8f0;
+	--slate-100: #f1f5f9;
+	--slate-50: #f8fafc;
+	--amber-700: #a16207;
+	--amber-100: #fef3c7;
+	--amber-50: #fffbeb;
+
+	/* Semantic roles: components should consume these names, not raw hues. */
+	/* Financial meaning must pair color with text, structure, or iconography. */
+	--surface: var(--slate-50);
+	--surface-subtle: #f4f8f5;
+	--surface-elevated: #ffffff;
+	--surface-brand: var(--forest-950);
+	--content: var(--slate-950);
+	--content-muted: var(--slate-600);
+	--content-inverse: #ffffff;
+	--border: var(--slate-200);
+	--border-strong: var(--slate-400);
+	--brand: var(--forest-800);
+	--brand-hover: var(--forest-900);
+	--brand-subtle: var(--leaf-50);
+	--positive: #166534;
+	--positive-subtle: #f0fdf4;
+	--negative: #991b1b;
+	--negative-subtle: #fef2f2;
+	--warning: #854d0e;
+	--warning-subtle: #fefce8;
+	--info: #075985;
+	--info-subtle: #f0f9ff;
+	--liability: #9a3412;
+	--liability-subtle: #fff7ed;
+	--focus: #1d4ed8;
+
+	/* Local system typography keeps SSR and the local-first boundary deterministic. */
+	--font-body: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+	--font-display: Georgia, "Times New Roman", serif;
+	--font-numeric: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	background: var(--surface);
+	font-family: var(--font-body);
+}
+
+body {
+	margin: 0;
+	min-width: 320px;
+	background: var(--surface);
+	color: var(--content);
+	font-family: var(--font-body);
+	-webkit-font-smoothing: antialiased;
+	text-rendering: optimizeLegibility;
+}
+
+button,
+input,
+select,
+textarea {
+	font: inherit;
+}
+
+:focus-visible {
+	outline: 3px solid var(--focus);
+	outline-offset: 4px;
+}
+
+::selection {
+	background: var(--leaf-100);
+	color: var(--forest-950);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms;
+		animation-iteration-count: 1;
+		scroll-behavior: auto;
+		transition-duration: 0.01ms;
+	}
+}
