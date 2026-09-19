@@ -16,7 +16,7 @@ Create the first project-wide visual foundation for TheGreenWallet using the exi
 
 **Storage**: N/A. Theme tokens are static CSS decisions and do not contain user or financial data.
 
-**Testing**: Angular/Vitest unit tests where behavior is relevant, `pnpm exec ng build`, `pnpm exec ng test --no-watch`, and `pnpm check` against `src/`. Automated contrast, axe, keyboard, and browser validation are deferred to the later `003-playwright` feature.
+**Testing**: Angular/Vitest unit tests where behavior is relevant, `pnpm exec ng build`, `pnpm exec ng test --no-watch`, and `pnpm check` against `src/`. Automated contrast, accessibility, keyboard, and browser validation are outside this feature's implementation scope.
 
 **Target Platform**: Angular SSR web application with browser hydration; responsive viewport range from 320 CSS pixels through 1280 CSS pixels.
 
@@ -85,7 +85,7 @@ src/app/
 2. Import the theme file from `src/styles.css` while preserving the existing Tailwind import and Angular global style entry.
 3. Define global focus, reduced-motion, and base interaction rules that do not depend on browser-only APIs.
 4. Apply the semantic vocabulary to the first representative account setup surfaces when those surfaces exist; do not introduce business logic in the theme change.
-5. Validate the stylesheet integration, Angular SSR build, unit tests, and Biome checks. Defer automated contrast, axe, keyboard, and browser validation to `003-playwright`.
+5. Validate the stylesheet integration, Angular SSR build, unit tests, and Biome checks. Address automated contrast, accessibility, keyboard, and browser validation as separate quality work when needed.
 
 ## Complexity Tracking
 

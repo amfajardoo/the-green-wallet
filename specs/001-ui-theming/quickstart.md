@@ -36,6 +36,6 @@ Review the representative themed surfaces at 320, 768, and 1280 CSS pixel widths
 
 Run the production build and confirm that theme rendering does not depend on browser-only globals or runtime storage. The same semantic roles must be present after server rendering and browser hydration.
 
-## Browser automation follow-up
+## Accessibility and browser validation follow-up
 
-The shared Playwright runner and automated contrast, axe, keyboard, and browser checks are defined by `003-playwright`. Those validations are intentionally deferred from this feature and should be added there or in the relevant feature spec rather than duplicating runner setup here.
+Automated contrast, accessibility, keyboard, and browser checks are intentionally deferred from this feature. Add them through the validation strategy selected for the relevant feature rather than duplicating test-runner setup here.

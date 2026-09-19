@@ -23,13 +23,14 @@ are already available, with the catalog designed for later approved routes to re
 
 **Primary Dependencies**: Angular core and router, Angular Material/CDK aligned with the
 Angular 22 toolchain, Tailwind CSS 4.1.12 with the existing PostCSS integration, Vitest
-through the Angular test runner, the existing Playwright 1.62.1 browser foundation, and
-`@axe-core/playwright` for automated accessibility scans.
+through the Angular test runner, and a future browser-test foundation with automated
+accessibility scans.
 
 **Storage**: N/A. Navigation state is transient UI state and is not persisted.
 
-**Testing**: Vitest unit tests, Playwright viewport and keyboard journeys, Angular SSR
-build validation, and `pnpm check` scoped to `src/`.
+**Testing**: Vitest unit tests, feature-owned browser viewport and keyboard journeys,
+automated accessibility scans, Angular SSR build validation, and `pnpm check` scoped to
+`src/`.
 
 **Target Platform**: Angular SSR web application with browser hydration, supporting
 viewports from 320 CSS pixels through desktop widths.
@@ -100,8 +101,7 @@ src/
 ├── app.spec.ts                # Existing shell regression coverage
 └── styles.css                 # Existing global Tailwind entry point
 
-e2e/
-├── smoke.spec.ts              # Existing availability smoke coverage
+browser/
 └── sidenav.spec.ts            # Responsive, keyboard, and navigation journeys
 ```
 
@@ -174,8 +174,8 @@ the browser can receive input.
 
 ## Implementation Sequence
 
-1. Add Angular Material/CDK and `@axe-core/playwright` dependencies aligned with Angular
-   22, without adding application routes.
+1. Add Angular Material/CDK and an accessibility-scanning integration compatible with
+   the selected browser-test runner, without adding application routes.
 2. Define the navigation destination type and empty-by-default catalog.
 3. Create the standalone Material sidenav component and compose it into the application
    shell, preserving the existing router outlet and SSR entry points.
@@ -185,10 +185,10 @@ the browser can receive input.
    focus movement, focus restoration, and responsive state reconciliation.
 6. Add route-aware active-state semantics for future catalog entries and ensure both
    presentations consume the same catalog, including the empty-catalog behavior.
-7. Add unit, Playwright, keyboard, and AXE coverage at 320, 767, 768, 1023, 1024, and
-   1280 CSS pixels.
-8. Run the quickstart validation, Angular build, unit tests, scoped Biome check, AXE
-   checks, and existing smoke journey; reconcile the artifacts before implementation is
+7. Add unit, browser, keyboard, and automated accessibility coverage at 320, 767, 768,
+   1023, 1024, and 1280 CSS pixels.
+8. Run the quickstart validation, Angular build, unit tests, scoped Biome check, automated
+   accessibility checks, and browser journeys; reconcile the artifacts before implementation is
    considered complete.
 
 ## Validation Matrix
@@ -206,8 +206,8 @@ the browser can receive input.
 
 - The visual treatment should consume the semantic roles defined by `001-ui-theming`
   when that feature is implemented; this feature does not create a second token system.
-- The existing Playwright foundation from `003-playwright` provides the browser runner;
-  this feature adds its own `e2e/sidenav.spec.ts` journeys and AXE scans.
+- A future browser-test foundation provides the runner; this feature adds its own
+  feature-owned browser journeys and accessibility scans.
 - Account setup and future financial routes remain owned by their own specifications.
 - No contracts are generated because the feature has no external API, persistence
   boundary, or inter-process interface. `src/app/app.routes.ts` remains unchanged.

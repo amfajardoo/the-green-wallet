@@ -4,9 +4,9 @@
 
 **Prerequisites**: `plan.md`, `spec.md`, `research.md`, `data-model.md`, and `quickstart.md`
 
-**Tests**: Required. The feature plan calls for Vitest unit coverage, Playwright viewport
-and keyboard journeys, automated AXE scans, Angular SSR build validation, and scoped
-Biome validation.
+**Tests**: Required. The feature plan calls for Vitest unit coverage, feature-owned
+browser viewport and keyboard journeys, automated accessibility scans, Angular SSR build
+validation, and scoped Biome validation.
 
 **Organization**: Tasks are grouped by user story so the persistent layout, mobile drawer,
 and accessibility behavior can be implemented and validated in dependency order.
@@ -16,12 +16,12 @@ and accessibility behavior can be implemented and validated in dependency order.
 **Purpose**: Add the approved UI/testing dependencies and browser-test location without
 creating application routes or financial behavior.
 
-- [ ] T001 Add Angular Material/CDK dependencies aligned with the Angular 22 toolchain
-  and add `@axe-core/playwright` as a development dependency in `package.json` and
-  `pnpm-lock.yaml`; do not modify `src/app/app.routes.ts`.
-- [ ] T002 [P] Create the `e2e/sidenav.spec.ts` feature-owned browser test scaffold with
-  isolated test setup, viewport helper coverage locations, and AXE import scaffolding,
-  without changing `playwright.config.ts`.
+- [ ] T001 Add Angular Material/CDK dependencies aligned with the Angular 22 toolchain;
+  keep the browser runner and accessibility-scanning dependency selection separate from
+  this feature's implementation setup; do not modify `src/app/app.routes.ts`.
+- [ ] T002 [P] Create the `browser/sidenav.spec.ts` feature-owned browser test scaffold
+  with isolated test setup, viewport helper coverage locations, and accessibility scan
+  integration points.
 
 ---
 
@@ -69,7 +69,7 @@ not obstructed, and an empty catalog exposes no dead or false-active destination
 
 ### Tests for User Story 1
 
-- [ ] T008 [P] [US1] Add Playwright assertions in `e2e/sidenav.spec.ts` for persistent
+- [ ] T008 [P] [US1] Add browser assertions in `browser/sidenav.spec.ts` for persistent
   Material sidenav visibility, `side` presentation, mobile-trigger absence, content
   usability, empty-catalog behavior, no horizontal scroll, and AXE scans at 768px,
   1023px, 1024px, and 1280px.
@@ -113,7 +113,7 @@ backdrop, explicit close, and destination selection when a destination exists.
   `src/app/navigation/sidenav.component.spec.ts` for the initial closed state, Material
   drawer open state, explicit close, Escape/backdrop close events, empty-catalog open
   behavior, destination selection, and transient state reset at the mobile boundary.
-- [ ] T014 [P] [US2] Extend `e2e/sidenav.spec.ts` with 320px and 767px scenarios that
+- [ ] T014 [P] [US2] Extend `browser/sidenav.spec.ts` with 320px and 767px scenarios that
   assert the closed mobile drawer is hidden from visual and keyboard flow, the trigger
   opens a left-side `over` drawer with backdrop, the empty catalog has no dead links,
   and AXE scans pass.
@@ -151,8 +151,9 @@ and AXE results at tablet and desktop widths.
 
 ### Tests for User Story 3
 
-- [ ] T018 [P] [US3] Add keyboard and AXE assertions in `e2e/sidenav.spec.ts` using
-  `@axe-core/playwright` for the named navigation landmark, trigger state, visible focus,
+- [ ] T018 [P] [US3] Add keyboard and automated accessibility assertions in
+  `browser/sidenav.spec.ts` using the selected browser-test accessibility integration for
+  the named navigation landmark, trigger state, visible focus,
   focus movement into the Material drawer, Escape/backdrop focus restoration, active
   destination semantics, keyboard traversal, and zero serious or critical violations at
   all six required viewport widths.
@@ -173,7 +174,7 @@ and AXE results at tablet and desktop widths.
   for ordinary site navigation.
 - [ ] T022 [US3] Add visible focus, non-color active treatment, reduced-motion-safe
   transitions, and focus-order styles in `src/app/navigation/sidenav.component.css`.
-- [ ] T023 [US3] Add a responsive resize journey in `e2e/sidenav.spec.ts` that opens the
+- [ ] T023 [US3] Add a responsive resize journey in `browser/sidenav.spec.ts` that opens the
   mobile drawer, crosses from 767px to 768px, confirms the Material `side` sidenav is
   shown without the mobile drawer obstructing content, and runs the AXE scan after the
   transition.
@@ -194,9 +195,9 @@ within the repository's existing scope.
   `src/app/navigation/sidenav.component.spec.ts` pass.
 - [ ] T026 [P] Run `pnpm check` and resolve all Biome diagnostics only under `src/` for
   `src/app/app.ts`, `src/app/app.html`, `src/app/app.css`, and `src/app/navigation/`.
-- [ ] T027 [P] Run `pnpm e2e` and confirm `e2e/smoke.spec.ts` and
-  `e2e/sidenav.spec.ts` pass all viewport, keyboard, and AXE journeys without tracking
-  `playwright-report/` or `test-results/` artifacts.
+- [ ] T027 [P] Run the configured browser-validation command and confirm
+  `browser/sidenav.spec.ts` passes all viewport, keyboard, and accessibility journeys
+  without tracking generated artifacts.
 - [ ] T028 Reconcile `specs/005-sidenav/spec.md`, `specs/005-sidenav/plan.md`,
   `specs/005-sidenav/research.md`, `specs/005-sidenav/data-model.md`, and
   `specs/005-sidenav/quickstart.md` with the delivered Material drawer behavior, then
@@ -232,7 +233,7 @@ within the repository's existing scope.
 ### Parallel Opportunities
 
 - T002 can run independently after T001 is planned because it touches only
-  `e2e/sidenav.spec.ts`.
+  `browser/sidenav.spec.ts`.
 - T003 and T004 can run in parallel because they define separate shared navigation files.
 - T008 and T009 can run in parallel after the foundational component boundary exists.
 - T013 and T014 can run in parallel because they add unit and browser coverage in separate
@@ -246,7 +247,7 @@ within the repository's existing scope.
 ## Parallel Example: User Story 1
 
 ```text
-Task: Add persistent Material viewport and AXE assertions to e2e/sidenav.spec.ts
+Task: Add persistent Material viewport and accessibility assertions to browser/sidenav.spec.ts
 Task: Add empty-catalog and test-local active-state coverage to src/app/navigation/sidenav.component.spec.ts
 ```
 
@@ -254,7 +255,7 @@ Task: Add empty-catalog and test-local active-state coverage to src/app/navigati
 
 ```text
 Task: Add mobile Material drawer state tests to src/app/navigation/sidenav.component.spec.ts
-Task: Add 320px and 767px Material drawer scenarios to e2e/sidenav.spec.ts
+Task: Add 320px and 767px Material drawer scenarios to browser/sidenav.spec.ts
 ```
 
 ## Parallel Example: Final Validation
@@ -263,7 +264,7 @@ Task: Add 320px and 767px Material drawer scenarios to e2e/sidenav.spec.ts
 Task: Run pnpm exec ng build for src/app/app.ts and src/app/navigation/
 Task: Run pnpm exec ng test --no-watch for src/app/navigation/sidenav.component.spec.ts
 Task: Run pnpm check for src/
-Task: Run pnpm e2e for e2e/smoke.spec.ts and e2e/sidenav.spec.ts
+Task: Run the configured browser-validation command for browser/sidenav.spec.ts
 ```
 
 ## Implementation Strategy
