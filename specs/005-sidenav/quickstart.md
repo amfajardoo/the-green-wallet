@@ -15,11 +15,7 @@ data.
 pnpm install
 ```
 
-- Chromium installed for the existing Playwright foundation:
-
-```powershell
-pnpm e2e:install
-```
+- The repository's selected browser-test runner and accessibility scanner are installed.
 
 ## Static validation
 
@@ -37,11 +33,7 @@ diagnostics for files under `src/`.
 
 ## Browser validation
 
-Run the full browser suite:
-
-```powershell
-pnpm e2e
-```
+Run the configured browser-validation command from the repository root.
 
 The sidenav browser journey MUST validate these viewport widths:
 
@@ -88,11 +80,6 @@ defined presentation.
 
 ## Failure evidence
 
-When a browser check fails, inspect the existing ignored Playwright artifacts:
-
-- `test-results/` for screenshots and traces;
-- `playwright-report/` for the HTML report;
-- `pnpm e2e:report` to open the latest report;
-- `pnpm exec playwright show-trace <trace-file>` to inspect a retained trace.
-
-Generated reports and browser binaries MUST remain untracked.
+When a browser check fails, inspect the failure artifacts produced by the selected
+browser-test runner. Generated reports, traces, screenshots, videos, and browser
+binaries MUST remain untracked.

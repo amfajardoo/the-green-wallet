@@ -93,8 +93,8 @@ expanded state and controls the mobile presentation.
 pixels, plus unit coverage for mobile state transitions and focus-related behavior.
 
 **Rationale**: The six widths cover the supported minimum, both sides of each breakpoint,
-and a representative wide desktop layout. The existing Playwright foundation already
-provides isolated Chromium contexts and failure evidence.
+and a representative wide desktop layout. A future browser-test foundation should
+provide isolated contexts and failure evidence.
 
 **Alternatives considered**:
 
@@ -105,9 +105,9 @@ provides isolated Chromium contexts and failure evidence.
 
 ## Resolved Unknowns
 
-- The project uses Angular 22 standalone components and already has a Playwright runner;
-  Angular Material/CDK and `@axe-core/playwright` are the only new dependencies required
-  for this feature.
+- The project uses Angular 22 standalone components. Angular Material/CDK and an
+  accessibility-scanning integration are the only feature-specific dependencies required;
+  browser-runner selection remains a separate repository decision.
 - There are currently no configured application routes, so the destination catalog starts
   empty and `src/app/app.routes.ts` remains unchanged.
 - Navigation state is UI-only and does not require storage, remote services, or domain
@@ -115,9 +115,10 @@ provides isolated Chromium contexts and failure evidence.
 
 ## Decision 6: Add automated AXE coverage to the feature browser journeys
 
-**Decision**: Use `@axe-core/playwright` in `e2e/sidenav.spec.ts` and scan the rendered
-sidenav at all six required viewport widths. The feature passes only when no serious or
-critical violations remain.
+**Decision**: Add automated accessibility scans to the feature-owned browser journey and
+scan the rendered sidenav at all six required viewport widths. The feature passes only
+when no serious or critical violations remain; the concrete integration will follow the
+repository's selected browser-test runner.
 
 **Rationale**: The project constitution requires applicable automated accessibility
 checks, and the sidenav changes a global navigation landmark, drawer, focus order, and

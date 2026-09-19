@@ -4,7 +4,7 @@
   "cli": {
     "packageManager": "pnpm",
     "analytics": false,
-    "schematicCollections": ["@schematics/angular", "playwright-ng-schematics"]
+    "schematicCollections": ["@schematics/angular"]
   },
   "newProjectRoot": "projects",
   "projects": {
@@ -74,17 +74,6 @@
         },
         "test": {
           "builder": "@angular/build:unit-test"
-        },
-        "e2e": {
-          "builder": "playwright-ng-schematics:playwright",
-          "options": {
-            "devServerTarget": "the-green-wallet:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "the-green-wallet:serve:production"
-            }
-          }
         }
       }
     }

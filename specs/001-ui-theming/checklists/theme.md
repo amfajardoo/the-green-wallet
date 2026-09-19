@@ -28,7 +28,7 @@
 
 - [ ] CHK011 Do the light-mode assumption and the future-mode extension requirement remain consistent across the spec, research, and data model? [Consistency, Spec §Assumptions and Research §Decision 4]
 - [ ] CHK012 Do the local system-font decision and local-first privacy constraint agree without introducing an external asset dependency? [Consistency, Research §Decision 3 and Plan §Constitution Check]
-- [ ] CHK013 Does the plan's deferral of automated accessibility validation to `003-playwright` remain consistent with the spec's retained WCAG design requirement? [Consistency, Plan §Technical Context and Quickstart §Browser automation follow-up]
+- [ ] CHK013 Does the plan's deferral of automated accessibility validation remain consistent with the spec's retained WCAG design requirement? [Consistency, Plan §Technical Context and Quickstart §Accessibility and browser validation follow-up]
 - [ ] CHK014 Are semantic financial roles described consistently in the spec and token model, especially positive, negative, and liability? [Consistency, Spec §FR-003 and Data Model §Semantic Color Tokens]
 
 ## Acceptance Criteria Quality

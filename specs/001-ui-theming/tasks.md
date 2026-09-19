@@ -4,7 +4,7 @@
 
 **Prerequisites**: `plan.md`, `spec.md`, `research.md`, `data-model.md`, and `quickstart.md`
 
-**Tests**: No feature-specific contrast, axe, keyboard, or browser test tasks are included. Those validations are deferred to `003-playwright`. Existing build, unit-test, and Biome commands remain required validation.
+**Tests**: No feature-specific contrast, automated accessibility, keyboard, or browser test tasks are included. Those validations remain outside this feature's implementation scope. Existing build, unit-test, and Biome commands remain required validation.
 
 **Organization**: Tasks are grouped by user story so each requirement slice can be implemented and reviewed independently.
 
@@ -100,7 +100,7 @@
 - [ ] T016 [P] Run `pnpm exec ng build` against `src/styles.css`, `src/styles/theme.css`, and the updated application shell to confirm Angular SSR compilation.
 - [ ] T017 [P] Run `pnpm exec ng test --no-watch` against the existing Angular test suite, including `src/app/app.spec.ts`.
 - [ ] T018 [P] Run `pnpm check` against the application source under `src/` and resolve any diagnostics caused by the implementation.
-- [ ] T019 Run the non-browser steps in `specs/001-ui-theming/quickstart.md` and record that contrast, axe, keyboard, and browser validation are deferred to `003-playwright`.
+- [ ] T019 Run the non-browser steps in `specs/001-ui-theming/quickstart.md` and record that contrast, automated accessibility, keyboard, and browser validation remain future quality work.
 - [ ] T020 Confirm that `src/styles/theme.css`, `src/styles.css`, and `src/app/app.html` contain no persistence, network-font, browser-global, or financial-domain logic.
 
 ---
@@ -155,11 +155,11 @@ Task: Run pnpm check against src/
 2. Add financial semantic roles for future account and transaction surfaces.
 3. Add responsive and static interaction conventions.
 4. Document the reusable vocabulary and complete current-scope validation.
-5. Add automated contrast, axe, keyboard, and browser checks through `003-playwright` later.
+5. Add automated contrast, accessibility, keyboard, and browser checks through the future validation strategy when those checks are introduced.
 
 ## Notes
 
 - `[P]` tasks can run in parallel when they touch different files or are read-only validations.
 - `[US#]` labels map implementation tasks to the user stories in `spec.md`.
 - No feature-specific browser or accessibility test files are created by this feature.
-- The `003-playwright` feature owns the deferred browser validation infrastructure.
+- Browser and feature-specific accessibility validation remain separate future quality work.
