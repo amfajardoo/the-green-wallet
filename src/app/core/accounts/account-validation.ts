@@ -42,28 +42,28 @@ export function validateCreateAccountInput(
 		return error(
 			"name",
 			"name-required",
-			"Enter an account name with at least one visible character.",
+			"Escribe un nombre para la cuenta con al menos un carácter visible.",
 		);
 	}
 
 	if (input.type === EMPTY_TEXT) {
-		return error("type", "type-required", "Select an account type.");
+		return error("type", "type-required", "Selecciona un tipo de cuenta.");
 	}
 
 	if (!isAccountType(input.type)) {
 		return error(
 			"type",
 			"type-unsupported",
-			"Select savings, checking, cash, or credit card.",
+			"Selecciona cuenta de ahorros, cuenta corriente, efectivo o tarjeta de crédito.",
 		);
 	}
 
 	if (input.currency === EMPTY_TEXT) {
-		return error("currency", "currency-required", "Select a currency.");
+		return error("currency", "currency-required", "Selecciona una moneda.");
 	}
 
 	if (!isCurrency(input.currency)) {
-		return error("currency", "currency-unsupported", "Select COP or USD.");
+		return error("currency", "currency-unsupported", "Selecciona COP o USD.");
 	}
 
 	const normalizedName = name.toLowerCase();
@@ -77,7 +77,7 @@ export function validateCreateAccountInput(
 		return error(
 			"account",
 			"duplicate-account",
-			"An account with this name already exists in the selected currency.",
+			"Ya existe una cuenta con este nombre en la moneda seleccionada.",
 		);
 	}
 
@@ -88,8 +88,8 @@ export function validateCreateAccountInput(
 			"openingBalance",
 			"opening-balance-invalid",
 			input.currency === "COP"
-				? "Enter a non-negative whole COP amount, or leave it empty for zero."
-				: "Enter a non-negative USD amount with up to two decimal places, or leave it empty for zero.",
+				? "Escribe un valor COP entero y no negativo, o déjalo vacío para empezar en cero."
+				: "Escribe un valor USD no negativo con máximo dos decimales, o déjalo vacío para empezar en cero.",
 		);
 	}
 

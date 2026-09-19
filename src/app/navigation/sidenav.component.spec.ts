@@ -25,6 +25,12 @@ describe("Sidenav", () => {
 		expect(
 			fixture.nativeElement.querySelector("#mobile-navigation"),
 		).toBeNull();
+		expect(trigger.textContent).toContain("Menú");
+		expect(
+			fixture.nativeElement
+				.querySelector(".persistent-navigation")
+				.getAttribute("aria-label"),
+		).toBe("Navegación principal");
 	});
 
 	it("opens, focuses, and closes the transient mobile navigation", async () => {
@@ -53,5 +59,16 @@ describe("Sidenav", () => {
 		).toBeNull();
 		expect(trigger.getAttribute("aria-expanded")).toBe("false");
 		expect(document.activeElement).toBe(trigger);
+	});
+
+	it("exposes Spanish navigation labels and accessible controls", () => {
+		const fixture = createFixture();
+		const navigation = fixture.nativeElement.querySelector(
+			".persistent-navigation",
+		) as HTMLElement;
+
+		expect(navigation.textContent).toContain("Cuentas");
+		expect(navigation.textContent).toContain("Crea y revisa tus cuentas");
+		expect(navigation.textContent).not.toContain("Accounts");
 	});
 });

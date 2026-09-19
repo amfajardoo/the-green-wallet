@@ -46,6 +46,7 @@
 	--slate-100: #f1f5f9;
 	--slate-50: #f8fafc;
 	--amber-700: #a16207;
+	--amber-500: #d97706;
 	--amber-100: #fef3c7;
 	--amber-50: #fffbeb;
 
@@ -76,8 +77,8 @@
 	--focus: #1d4ed8;
 
 	/* Local system typography keeps SSR and the local-first boundary deterministic. */
-	--font-body: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-	--font-display: Georgia, "Times New Roman", serif;
+	--font-body: Aptos, "Segoe UI", "Helvetica Neue", sans-serif;
+	--font-display: "Iowan Old Style", Baskerville, Georgia, serif;
 	--font-numeric: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
 }
 
@@ -90,6 +91,7 @@
 html {
 	background: var(--surface);
 	font-family: var(--font-body);
+	font-size: 100%;
 }
 
 body {
@@ -107,6 +109,13 @@ input,
 select,
 textarea {
 	font: inherit;
+}
+
+button,
+select,
+input[type="button"],
+input[type="submit"] {
+	min-block-size: 2.75rem;
 }
 
 :focus-visible {

@@ -75,6 +75,14 @@
 	color: var(--brand);
 }
 
+.persistent-navigation a:focus-visible,
+.mobile-navigation a:focus-visible,
+.menu-trigger:focus-visible,
+.navigation-close:focus-visible {
+	position: relative;
+	z-index: 1;
+}
+
 .navigation-link-marker {
 	width: 0.35rem;
 	height: 0.35rem;
@@ -152,6 +160,7 @@
 	padding: 1.25rem;
 	background: var(--surface);
 	box-shadow: 1rem 0 2rem rgb(15 23 42 / 15%);
+	overflow-y: auto;
 }
 
 .mobile-navigation-header {

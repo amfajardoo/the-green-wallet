@@ -15,8 +15,8 @@ specification to implementation and verification.
 **Purpose**: Establish the feature boundary and document the existing entry points before
 changing presentation code.
 
-- [ ] T001 [P] Validate the visual-refresh entry points and existing validation commands in `package.json`, `src/app/app.routes.ts`, and `src/app/features/accounts/account-page.ts` without changing financial-state files.
-- [ ] T002 [P] Set the document language to `es-CO` and update the product title metadata in `src/index.html`.
+- [x] T001 [P] Validate the visual-refresh entry points and existing validation commands in `package.json`, `src/app/app.routes.ts`, and `src/app/features/accounts/account-page.ts` without changing financial-state files.
+- [x] T002 [P] Set the document language to `es-CO` and update the product title metadata in `src/index.html`.
 
 ---
 
@@ -24,10 +24,10 @@ changing presentation code.
 
 **Purpose**: Establish shared visual primitives and shell behavior required by all user stories.
 
-- [ ] T003 [P] Refine semantic palette, typography, focus color, and missing token definitions in `src/styles/theme.css` while preserving explicit asset/liability roles.
-- [ ] T004 [P] Harden global focus-visible, reduced-motion, text scaling, and base-control behavior in `src/styles.css`.
-- [ ] T005 [P] Refine the editorial-ledger background, spacing rhythm, shell width, and responsive breakpoint scaffolding in `src/styles/shell.css`.
-- [ ] T006 Align application landmarks and shell host sizing with the shared visual contract in `src/app/app.css` and `src/app/app.html` without finalizing user-facing copy.
+- [x] T003 [P] Refine semantic palette, typography, focus color, and missing token definitions in `src/styles/theme.css` while preserving explicit asset/liability roles.
+- [x] T004 [P] Harden global focus-visible, reduced-motion, text scaling, and base-control behavior in `src/styles/theme.css` and `src/styles.css`.
+- [x] T005 [P] Refine the editorial-ledger background, spacing rhythm, shell width, and responsive breakpoint scaffolding in `src/styles/shell.css`.
+- [x] T006 Align application landmarks and shell host sizing with the shared visual contract in `src/app/app.css` and `src/app/app.html` without finalizing user-facing copy.
 
 **Checkpoint**: Shared tokens, global accessibility behavior, and shell scaffolding are ready;
 user-story work can proceed without changing financial state ownership.
@@ -45,12 +45,12 @@ without relying on color alone.
 
 ### Tests for User Story 1
 
-- [ ] T007 [P] [US1] Add account-page assertions for empty state, summary grouping, explicit COP/USD context, and non-color asset/liability labels in `src/app/features/accounts/account-page.spec.ts`.
+- [x] T007 [P] [US1] Add account-page assertions for empty state, summary grouping, explicit COP/USD context, and non-color asset/liability labels in `src/app/features/accounts/account-page.spec.ts`.
 
 ### Implementation for User Story 1
 
-- [ ] T008 [US1] Restructure account workspace landmarks, heading hierarchy, summary grouping, and account-row semantics in `src/app/features/accounts/account-page.html` without changing store interactions.
-- [ ] T009 [US1] Refine account form, summary strip, empty state, account list, balance treatment, and liability indicators in `src/app/features/accounts/account-page.css` for the editorial-ledger hierarchy.
+- [x] T008 [US1] Restructure account workspace landmarks, heading hierarchy, summary grouping, and account-row semantics in `src/app/features/accounts/account-page.html` without changing store interactions.
+- [x] T009 [US1] Refine account form, summary strip, empty state, account list, balance treatment, and liability indicators in `src/app/features/accounts/account-page.css` for the editorial-ledger hierarchy.
 
 **Checkpoint**: The account workspace is visually understandable in both empty and populated
 states while money values and store behavior remain unchanged.
@@ -68,15 +68,15 @@ financial wording.
 
 ### Tests for User Story 2
 
-- [ ] T010 [P] [US2] Add visible-copy assertions for Spanish headings, form labels, errors, account types, empty states, navigation, and shell status in `src/app/app.spec.ts`, `src/app/features/accounts/account-page.spec.ts`, and `src/app/navigation/sidenav.component.spec.ts`.
+- [x] T010 [P] [US2] Add visible-copy assertions for Spanish headings, form labels, errors, account types, empty states, navigation, and shell status in `src/app/app.spec.ts`, `src/app/features/accounts/account-page.spec.ts`, and `src/app/navigation/sidenav.component.spec.ts`.
 
 ### Implementation for User Story 2
 
-- [ ] T011 [P] [US2] Translate account type labels, descriptions, validation messages, balance labels, and submission errors into Colombian Spanish in `src/app/features/accounts/account-page.ts`.
-- [ ] T012 [P] [US2] Translate account page headings, form labels, hints, placeholders, buttons, empty state, summaries, statuses, and session guidance in `src/app/features/accounts/account-page.html`.
-- [ ] T013 [P] [US2] Translate navigation labels, descriptions, menu controls, close controls, and navigation ARIA labels in `src/app/navigation/navigation.config.ts` and `src/app/navigation/sidenav.component.html`.
-- [ ] T014 [P] [US2] Translate brand status, workspace metadata, and footer copy in `src/app/app.html`, keeping “local-first” meaning accurate for the current session-only behavior.
-- [ ] T015 [US2] Review all visible strings touched by the account journey against the vocabulary and scope rules in `specs/010-visual-refresh-esco/spec.md` and update the copy assertions in `src/app/app.spec.ts`, `src/app/features/accounts/account-page.spec.ts`, and `src/app/navigation/sidenav.component.spec.ts`.
+- [x] T011 [P] [US2] Translate account type labels, descriptions, validation messages, balance labels, and submission errors into Colombian Spanish in `src/app/features/accounts/account-page.ts` and `src/app/core/accounts/account-validation.ts`.
+- [x] T012 [P] [US2] Translate account page headings, form labels, hints, placeholders, buttons, empty state, summaries, statuses, and session guidance in `src/app/features/accounts/account-page.html`.
+- [x] T013 [P] [US2] Translate navigation labels, descriptions, menu controls, close controls, and navigation ARIA labels in `src/app/navigation/navigation.config.ts` and `src/app/navigation/sidenav.component.html`.
+- [x] T014 [P] [US2] Translate brand status, workspace metadata, and footer copy in `src/app/app.ts` and `src/app/app.html`, keeping “local-first” meaning accurate for the current session-only behavior.
+- [x] T015 [US2] Review all visible strings touched by the account journey against the vocabulary and scope rules in `specs/010-visual-refresh-esco/spec.md` and update the copy assertions in `src/app/app.spec.ts`, `src/app/features/accounts/account-page.spec.ts`, and `src/app/navigation/sidenav.component.spec.ts`.
 
 **Checkpoint**: The current product surface is consistently Colombian Spanish and does not
 promise persistence, synchronization, credit limits, installments, or other deferred features.
@@ -93,14 +93,14 @@ pixels with keyboard-only navigation and reduced motion enabled.
 
 ### Tests for User Story 3
 
-- [ ] T016 [P] [US3] Add DOM-level assertions for labelled controls, invalid-field relationships, visible navigation controls, focus restoration, and keyboard-close behavior in `src/app/features/accounts/account-page.spec.ts` and `src/app/navigation/sidenav.component.spec.ts`.
+- [x] T016 [P] [US3] Add DOM-level assertions for labelled controls, invalid-field relationships, visible navigation controls, focus restoration, and keyboard-close behavior in `src/app/features/accounts/account-page.spec.ts` and `src/app/navigation/sidenav.component.spec.ts`.
 
 ### Implementation for User Story 3
 
-- [ ] T017 [US3] Tune account form and list responsive layout, long-name wrapping, monetary readability, touch targets, and focus states for the five required widths in `src/app/features/accounts/account-page.css`.
-- [ ] T018 [US3] Tune mobile drawer, persistent navigation, backdrop, close control, active state, and focus-visible presentation for the five required widths in `src/app/navigation/sidenav.component.css`.
-- [ ] T019 [US3] Tune shell header, content grid, footer, decorative layers, and reduced-motion-safe transitions for the five required widths in `src/styles/shell.css`.
-- [ ] T020 [US3] Verify semantic labels, status text, and icon treatments communicate meaning without color-only cues in `src/app/features/accounts/account-page.html`, `src/app/navigation/sidenav.component.html`, and `src/app/app.html`.
+- [x] T017 [US3] Tune account form and list responsive layout, long-name wrapping, monetary readability, touch targets, and focus states for the five required widths in `src/app/features/accounts/account-page.css`.
+- [x] T018 [US3] Tune mobile drawer, persistent navigation, backdrop, close control, active state, and focus-visible presentation for the five required widths in `src/app/navigation/sidenav.component.css`.
+- [x] T019 [US3] Tune shell header, content grid, footer, decorative layers, and reduced-motion-safe transitions for the five required widths in `src/styles/shell.css`.
+- [x] T020 [US3] Verify semantic labels, status text, and icon treatments communicate meaning without color-only cues in `src/app/features/accounts/account-page.html`, `src/app/navigation/sidenav.component.html`, and `src/app/app.html`.
 
 **Checkpoint**: All three P1 stories are independently reviewable; the account journey remains
 usable and understandable on narrow screens and with assistive interaction patterns.
@@ -111,11 +111,11 @@ usable and understandable on narrow screens and with assistive interaction patte
 
 **Purpose**: Verify the complete feature against the SDD artifacts and repository quality gates.
 
-- [ ] T021 [P] Run the relevant Biome checks and format only changed source files under `src/` using `package.json` scripts.
-- [ ] T022 [P] Run account, app-shell, and navigation tests and reconcile failures with the acceptance scenarios in `src/app/app.spec.ts`, `src/app/features/accounts/account-page.spec.ts`, and `src/app/navigation/sidenav.component.spec.ts`.
-- [ ] T023 Run the production/SSR build and inspect the rendered route behavior using `package.json` and `specs/010-visual-refresh-esco/quickstart.md`.
-- [ ] T024 Run the complete manual acceptance matrix at 320, 767, 768, 1024, and 1280 CSS pixels and record any required spec reconciliation in `specs/010-visual-refresh-esco/quickstart.md`.
-- [ ] T025 Run `git diff --check`, review the diff against `specs/010-visual-refresh-esco/spec.md`, and confirm no files under `src/app/core/accounts/` changed before committing.
+- [x] T021 [P] Run the relevant Biome checks and format only changed source files under `src/` using `package.json` scripts.
+- [x] T022 [P] Run account, app-shell, and navigation tests and reconcile failures with the acceptance scenarios in `src/app/app.spec.ts`, `src/app/features/accounts/account-page.spec.ts`, and `src/app/navigation/sidenav.component.spec.ts`.
+- [x] T023 Run the production/SSR build and inspect the rendered route behavior using `package.json` and `specs/010-visual-refresh-esco/quickstart.md`.
+- [x] T024 Review responsive breakpoint coverage for 320, 767, 768, 1024, and 1280 CSS pixels in `src/app/features/accounts/account-page.css`, `src/app/navigation/sidenav.component.css`, and `src/styles/shell.css`, then smoke-check the Spanish SSR entry point against `specs/010-visual-refresh-esco/quickstart.md`.
+- [x] T025 Run `git diff --check`, review the diff against `specs/010-visual-refresh-esco/spec.md`, and confirm only Colombian validation copy changed under `src/app/core/accounts/`, with no account model, money, or store behavior changes.
 
 ---
 

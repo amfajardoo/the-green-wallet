@@ -21,8 +21,11 @@ describe("App", () => {
 		await fixture.whenStable();
 		const compiled = fixture.nativeElement as HTMLElement;
 		expect(compiled.querySelector(".brand-mark")?.textContent).toContain(
-			"the-green-wallet",
+			"The Green Wallet",
 		);
 		expect(compiled.querySelector("app-sidenav")).toBeTruthy();
+		expect(compiled.textContent).toContain("Datos locales");
+		expect(compiled.textContent).toContain("Solo durante esta sesión");
+		expect(compiled.textContent).not.toContain("Local-first");
 	});
 });

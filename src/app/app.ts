@@ -9,5 +9,5 @@ import { Sidenav } from "./navigation/sidenav.component";
 	styleUrl: "./app.css",
 })
 export class App {
-	protected readonly title = signal("the-green-wallet");
+	protected readonly title = signal("The Green Wallet");
 }

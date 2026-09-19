@@ -18,6 +18,7 @@
 	font-weight: 400;
 	letter-spacing: -0.07em;
 	line-height: 0.98;
+	text-wrap: balance;
 }
 
 .account-page-intro {
@@ -26,6 +27,7 @@
 	color: var(--content-muted);
 	font-size: 0.98rem;
 	line-height: 1.65;
+	text-wrap: pretty;
 }
 
 .session-badge,
@@ -96,6 +98,7 @@
 	margin: 0;
 	font-size: 1.25rem;
 	letter-spacing: -0.04em;
+	text-wrap: balance;
 }
 
 .optional-note {
@@ -217,6 +220,7 @@
 	padding: 0.8rem;
 	border-radius: 0.8rem;
 	background: var(--surface-subtle);
+	align-content: start;
 }
 
 .summary-label {
@@ -229,12 +233,11 @@
 }
 
 .summary-strip strong {
-	overflow: hidden;
 	color: var(--content);
 	font-family: var(--font-numeric);
 	font-size: 0.78rem;
-	text-overflow: ellipsis;
-	white-space: nowrap;
+	line-height: 1.35;
+	overflow-wrap: anywhere;
 }
 
 .list-empty {
@@ -288,6 +291,7 @@
 	border: 1px solid var(--border);
 	border-radius: 0.85rem;
 	background: var(--surface);
+	min-width: 0;
 }
 
 .account-list-icon {
@@ -321,20 +325,16 @@
 }
 
 .account-list-topline h3 {
-	overflow: hidden;
 	margin: 0;
 	font-size: 0.82rem;
-	text-overflow: ellipsis;
-	white-space: nowrap;
+	overflow-wrap: anywhere;
 }
 
 .account-list-content p {
-	overflow: hidden;
 	margin: 0.25rem 0 0;
 	color: var(--content-muted);
 	font-size: 0.68rem;
-	text-overflow: ellipsis;
-	white-space: nowrap;
+	overflow-wrap: anywhere;
 }
 
 .currency-tag {
@@ -349,6 +349,9 @@
 	flex: 0 0 auto;
 	font-family: var(--font-numeric);
 	font-size: 0.8rem;
+	max-width: 100%;
+	overflow-wrap: anywhere;
+	text-align: right;
 }
 
 .session-note {
@@ -393,5 +396,22 @@
 	.account-balance {
 		width: calc(100% - 3.05rem);
 		margin-left: 3.05rem;
+		text-align: left;
+	}
+}
+
+@media (max-width: 360px) {
+	.account-form-card,
+	.account-list-card {
+		padding-inline: 1rem;
+	}
+
+	.card-heading {
+		align-items: flex-start;
+		flex-direction: column;
+	}
+
+	.optional-note {
+		text-align: left;
 	}
 }

@@ -32,6 +32,7 @@
 	z-index: 1;
 	width: min(100% - 2rem, 76rem);
 	margin-inline: auto;
+	min-width: 0;
 }
 
 .shell-body {
@@ -50,6 +51,7 @@
 	justify-content: space-between;
 	gap: 1rem;
 	padding-block: 1.25rem;
+	flex-wrap: wrap;
 }
 
 .brand-mark {
@@ -89,6 +91,8 @@
 	font-weight: 600;
 	letter-spacing: 0.08em;
 	text-transform: uppercase;
+	flex-wrap: wrap;
+	justify-content: flex-end;
 }
 
 .header-status {
@@ -463,6 +467,7 @@
 
 .shell-footer p {
 	margin: 0;
+	text-wrap: pretty;
 }
 
 @media (min-width: 768px) {

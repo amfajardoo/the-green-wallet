@@ -8,12 +8,12 @@
 		(click)="openMenu()"
 	>
 		<span class="menu-trigger-icon" aria-hidden="true"><span></span><span></span><span></span></span>
-		<span>Menu</span>
+		<span>Menú</span>
 	</button>
 
-	<nav class="persistent-navigation" aria-label="Primary navigation">
+	<nav class="persistent-navigation" aria-label="Navegación principal">
 		<div class="navigation-heading">
-			<span class="navigation-kicker">Workspace</span>
+			<span class="navigation-kicker">Espacio de trabajo</span>
 			<span class="navigation-rule" aria-hidden="true"></span>
 		</div>
 		<ul>
@@ -42,7 +42,7 @@
 			<button
 				class="navigation-backdrop"
 				type="button"
-				aria-label="Close navigation"
+				aria-label="Cerrar navegación"
 				(click)="closeMenu()"
 			></button>
 			<nav
@@ -50,14 +50,14 @@
 				id="mobile-navigation"
 				class="mobile-navigation"
 				tabindex="-1"
-				aria-label="Primary navigation"
+				aria-label="Navegación principal"
 				(keydown.escape)="closeMenu()"
 			>
 				<div class="mobile-navigation-header">
-					<span class="navigation-kicker">Workspace</span>
+					<span class="navigation-kicker">Espacio de trabajo</span>
 					<button class="navigation-close" type="button" (click)="closeMenu()">
 						<span aria-hidden="true">×</span>
-						<span>Close</span>
+						<span>Cerrar</span>
 					</button>
 				</div>
 				<ul>

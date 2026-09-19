@@ -32,17 +32,17 @@ const INITIAL_FORM_MODEL: AccountFormModel = {
 };
 
 const ACCOUNT_TYPE_LABELS: Readonly<Record<AccountType, string>> = {
-	savings: "Savings account",
-	checking: "Checking account",
-	cash: "Cash",
-	"credit-card": "Credit card",
+	savings: "Cuenta de ahorros",
+	checking: "Cuenta corriente",
+	cash: "Efectivo",
+	"credit-card": "Tarjeta de crédito",
 };
 
 const ACCOUNT_TYPE_DESCRIPTIONS: Readonly<Record<AccountType, string>> = {
-	savings: "Money set aside for goals and reserves.",
-	checking: "Your everyday spending account.",
-	cash: "Cash held outside a bank account.",
-	"credit-card": "An outstanding liability you owe.",
+	savings: "Dinero reservado para tus metas y ahorros.",
+	checking: "La cuenta que usas para tus gastos del día a día.",
+	cash: "Dinero en efectivo que tienes por fuera de una cuenta bancaria.",
+	"credit-card": "Una obligación pendiente que debes pagar.",
 };
 
 function isCurrency(value: string): value is Currency {
@@ -68,19 +68,19 @@ export class AccountPage {
 		AccountValidationError | undefined
 	>(undefined);
 	protected readonly accountForm = form(this.formModel, (schema) => {
-		required(schema.name, { message: "Enter an account name." });
+		required(schema.name, { message: "Escribe un nombre para la cuenta." });
 		validate(schema.name, ({ value }) => {
 			if (value().trim().length === 0) {
 				return {
 					kind: "name-whitespace",
-					message: "Use at least one visible character in the account name.",
+					message: "Escribe al menos un carácter visible para el nombre.",
 				};
 			}
 
 			return undefined;
 		});
-		required(schema.type, { message: "Select an account type." });
-		required(schema.currency, { message: "Select a currency." });
+		required(schema.type, { message: "Selecciona un tipo de cuenta." });
+		required(schema.currency, { message: "Selecciona una moneda." });
 		validate(schema.openingBalance, ({ value, valueOf: readValueOf }) => {
 			const rawValue = value().trim();
 
@@ -102,8 +102,8 @@ export class AccountPage {
 				kind: "opening-balance-format",
 				message:
 					rawCurrency === "COP"
-						? "Use a non-negative whole COP amount."
-						: "Use a non-negative USD amount with up to two decimal places.",
+						? "Usa un valor COP entero y no negativo."
+						: "Usa un valor USD no negativo con máximo dos decimales.",
 			};
 		});
 	});
@@ -117,8 +117,8 @@ export class AccountPage {
 
 	protected balanceLabel(account: Account): string {
 		return account.type === "credit-card"
-			? "Outstanding liability"
-			: "Available balance";
+			? "Saldo pendiente"
+			: "Saldo disponible";
 	}
 
 	protected accountTypeLabel(type: AccountType): string {

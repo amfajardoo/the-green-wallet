@@ -19,10 +19,11 @@ describe("AccountPage", () => {
 		const fixture = createFixture();
 		const text = fixture.nativeElement.textContent as string;
 
-		expect(text).toContain("No accounts yet");
-		expect(text).toContain("COP available");
-		expect(text).toContain("USD available");
-		expect(text).toContain("Session only");
+		expect(text).toContain("Aún no tienes cuentas");
+		expect(text).toContain("Disponible en COP");
+		expect(text).toContain("Disponible en USD");
+		expect(text).toContain("Solo durante esta sesión");
+		expect(text).not.toContain("No accounts yet");
 	});
 
 	it("renders accounts created through the shared store with their meaning", () => {
@@ -30,13 +31,13 @@ describe("AccountPage", () => {
 		const store = TestBed.inject(AccountStore);
 
 		store.createAccount({
-			name: "Main checking",
+			name: "Cuenta principal",
 			type: "checking",
 			currency: "COP",
 			openingBalance: "100000",
 		});
 		store.createAccount({
-			name: "Travel card",
+			name: "Tarjeta de viaje",
 			type: "credit-card",
 			currency: "USD",
 			openingBalance: "25.50",
@@ -44,10 +45,39 @@ describe("AccountPage", () => {
 		fixture.detectChanges();
 
 		const text = fixture.nativeElement.textContent as string;
-		expect(text).toContain("Main checking");
-		expect(text).toContain("Available balance");
-		expect(text).toContain("Travel card");
-		expect(text).toContain("Outstanding liability");
+		expect(text).toContain("Cuenta principal");
+		expect(text).toContain("Saldo disponible");
+		expect(text).toContain("Tarjeta de viaje");
+		expect(text).toContain("Saldo pendiente");
 		expect(text).toContain("USD 25.50");
+		expect(text).toContain("TC");
+	});
+
+	it("keeps financial meaning explicit in semantic labels", () => {
+		const fixture = createFixture();
+		const store = TestBed.inject(AccountStore);
+
+		store.createAccount({
+			name: "Cuenta de ahorros",
+			type: "savings",
+			currency: "COP",
+			openingBalance: "100000",
+		});
+		store.createAccount({
+			name: "Tarjeta",
+			type: "credit-card",
+			currency: "COP",
+			openingBalance: "25000",
+		});
+		fixture.detectChanges();
+
+		const rows = fixture.nativeElement.querySelectorAll(
+			".account-list-item",
+		) as NodeListOf<HTMLElement>;
+		expect(rows[0].textContent).toContain("Saldo disponible");
+		expect(rows[1].textContent).toContain("Saldo pendiente");
+		expect(
+			fixture.nativeElement.querySelector("#account-list-title"),
+		).toBeTruthy();
 	});
 });
