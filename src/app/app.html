@@ -1,6 +1,6 @@
 <div class="app-frame">
 	<header class="shell-header">
-		<a class="brand-mark" href="/" aria-label="TheGreenWallet home">
+		<a class="brand-mark" routerLink="/accounts" href="/accounts">
 			<span class="brand-icon" aria-hidden="true">
 				<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<title>Green leaf</title>
@@ -12,120 +12,19 @@
 		</a>
 		<div class="header-meta">
 			<span class="header-status"><span class="status-dot" aria-hidden="true"></span>Local-first</span>
-			<span>Session overview</span>
+			<span>Session workspace</span>
 		</div>
 	</header>
 
-	<main class="shell-main">
-		<section class="hero-grid" aria-labelledby="page-title">
-			<div class="hero-copy">
-				<p class="eyebrow">Personal finance / overview</p>
-				<h1 id="page-title" class="hero-title">Make every peso feel accounted for.</h1>
-				<p class="hero-description">
-					A quieter, clearer place to understand your money. TheGreenWallet keeps your
-					financial picture close, explicit, and ready for the next good decision.
-				</p>
-				<div class="hero-note">
-					<span class="hero-note-mark" aria-hidden="true"></span>
-					<span>Your balances will stay on this device and in this session until account setup is ready.</span>
-				</div>
-			</div>
-
-			<div class="hero-orbit" aria-hidden="true">
-				<div class="orbit-card">
-					<div class="orbit-center">
-						<div>
-							<span>00</span>
-							<small>accounts</small>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-
-		<section aria-labelledby="snapshot-title">
-			<div class="section-heading">
-				<div>
-					<h2 id="snapshot-title" class="section-title">Your financial snapshot</h2>
-					<p class="section-caption">A starting point, ready for your first account.</p>
-				</div>
-				<span class="currency-pill">COP · USD ready</span>
-			</div>
-
-			<div class="summary-grid">
-				<article class="stat-card">
-					<span class="stat-label">Available balance</span>
-					<p class="stat-value text-positive">$0.00</p>
-					<p class="stat-detail">Asset accounts will appear here.</p>
-				</article>
-				<article class="stat-card">
-					<span class="stat-label">Outstanding liability</span>
-					<p class="stat-value text-liability">$0.00</p>
-					<p class="stat-detail">Credit-card balances stay distinct.</p>
-				</article>
-				<article class="stat-card">
-					<span class="stat-label">Active accounts</span>
-					<p class="stat-value">0</p>
-					<p class="stat-detail">No account has been added yet.</p>
-				</article>
-			</div>
-		</section>
-
-		<section class="content-grid" aria-labelledby="empty-state-title">
-			<article class="empty-card">
-				<p class="eyebrow">Your wallet is quiet</p>
-				<h2 id="empty-state-title" class="empty-title">Start with one account.</h2>
-				<p class="empty-description">
-					Add your first savings account, checking account, cash wallet, or credit card
-					to turn this empty canvas into a trustworthy view of your everyday money.
-				</p>
-				<div class="empty-step">
-					<span class="empty-step-number">01</span>
-					<span>Account setup is the next step in your local financial workspace.</span>
-				</div>
-			</article>
-
-			<aside class="notes-card" aria-labelledby="notes-title">
-				<p class="eyebrow">Principles</p>
-				<h2 id="notes-title" class="section-title">Ledger notes</h2>
-				<ul class="notes-list">
-					<li>
-						<span class="note-icon" aria-hidden="true">
-							<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-								<title>Private by design</title>
-								<path d="M12 3 19 6v5c0 4.4-2.9 8.25-7 9.5C7.9 19.25 5 15.4 5 11V6l7-3Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" />
-								<path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
-							</svg>
-						</span>
-						<span><strong>Private by design</strong><p>No bank connection or remote sync is needed.</p></span>
-					</li>
-					<li>
-						<span class="note-icon" aria-hidden="true">
-							<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-								<title>Visible meaning</title>
-								<path d="M4 19h16M6 16.5V9m4 7.5V5m4 11.5v-4m4 4V7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
-							</svg>
-						</span>
-						<span><strong>Meaning stays visible</strong><p>Assets and liabilities will never blur together.</p></span>
-					</li>
-					<li>
-						<span class="note-icon" aria-hidden="true">
-							<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-								<title>Explicit currency</title>
-								<path d="M12 3v18M16.5 7.5c-.7-1-2-1.5-3.8-1.5-2.1 0-3.7 1-3.7 2.6 0 4.2 7.5 1.8 7.5 6 0 1.7-1.6 2.8-4 2.8-1.8 0-3.2-.6-4-1.7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
-							</svg>
-						</span>
-						<span><strong>Currency is explicit</strong><p>COP and USD will remain separate by default.</p></span>
-					</li>
-				</ul>
-			</aside>
-		</section>
-	</main>
+	<div class="shell-body">
+		<app-sidenav />
+		<main class="shell-content">
+			<router-outlet />
+		</main>
+	</div>
 
 	<footer class="shell-footer">
 		<p>Built for a calmer relationship with money.</p>
 		<p>v0.1 · Session workspace</p>
 	</footer>
-
-	<router-outlet />
 </div>

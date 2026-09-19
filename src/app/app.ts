@@ -1,9 +1,10 @@
 import { Component, signal } from "@angular/core";
-import { RouterOutlet } from "@angular/router";
+import { RouterLink, RouterOutlet } from "@angular/router";
+import { Sidenav } from "./navigation/sidenav.component";
 
 @Component({
 	selector: "app-root",
-	imports: [RouterOutlet],
+	imports: [RouterLink, RouterOutlet, Sidenav],
 	templateUrl: "./app.html",
 	styleUrl: "./app.css",
 })

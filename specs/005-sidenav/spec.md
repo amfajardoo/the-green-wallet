@@ -23,8 +23,8 @@ the larger layouts and gives users immediate awareness of the available product 
 verify that the side navigation is visible, and select an available destination without
 using a menu trigger.
 
-When the application has no approved destinations yet, the same test verifies that the
-visible navigation remains structurally valid without rendering speculative or dead links.
+The current approved destination is the account setup flow; the same test verifies that the
+visible navigation renders only implemented, user-facing destinations.
 
 **Acceptance Scenarios**:
 
@@ -51,8 +51,8 @@ still providing access to every available top-level destination.
 **Independent Test**: Open the application at 320 and 767 CSS pixels, verify that the
 navigation is hidden initially, open it with the menu control, and select a destination.
 
-When the destination catalog is empty, the test verifies that opening the menu does not
-invent an unavailable destination and that the drawer can still be dismissed.
+The test verifies that opening the menu exposes the same approved destination catalog and
+that the drawer can be dismissed without inventing unavailable destinations.
 
 **Acceptance Scenarios**:
 
@@ -111,8 +111,8 @@ tablet or desktop side navigation.
   content unusable at the narrowest supported tablet width.
 - A destination that is not implemented or available MUST NOT appear as a dead or
   misleading actionable link.
-- An empty destination catalog MUST render a valid navigation shell without dead links,
-  false active state, or misleading empty actions.
+- If a future build has no approved destinations, the navigation MUST render a valid shell
+  without dead links, false active state, or misleading empty actions.
 - Reduced-motion preferences MUST not prevent the menu from opening, closing, or being
   understood.
 
@@ -174,8 +174,8 @@ tablet or desktop side navigation.
 
 - The navigation MUST use a single level of available top-level destinations in this
   feature.
-- The initial destination catalog MAY be empty because application routes are not yet
-  defined; this feature MUST NOT create routes or speculative destinations.
+- The initial destination catalog MUST include the approved `/accounts` route and MUST NOT
+  include speculative transaction, transfer, payment, or persistence destinations.
 - The destination catalog MUST be shared by the persistent and mobile presentations so
   that the two layouts do not drift in labels, order, or availability.
 - The feature MUST preserve the existing route destination behavior; it changes access
@@ -220,8 +220,8 @@ tablet or desktop side navigation.
   orientation changes are handled through the resulting viewport width.
 - The boundaries of 768 and 1024 CSS pixels align with the project's existing responsive
   scale and are the single source of truth for this feature.
-- No application routes are defined for this feature; the destination catalog starts
-  empty and will be extended by future approved route specifications.
+- The account setup route is already approved and is the first destination; future approved
+  route specifications may extend the catalog without adding speculative links.
 - The initial mobile menu is closed on every new application session and after a page
   refresh.
 - The application has one primary navigation region; additional navigation regions, if

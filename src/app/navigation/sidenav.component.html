@@ -1,0 +1,83 @@
+<div class="navigation-shell">
+	<button
+		#menuButton
+		class="menu-trigger"
+		type="button"
+		aria-controls="mobile-navigation"
+		[attr.aria-expanded]="mobileOpen()"
+		(click)="openMenu()"
+	>
+		<span class="menu-trigger-icon" aria-hidden="true"><span></span><span></span><span></span></span>
+		<span>Menu</span>
+	</button>
+
+	<nav class="persistent-navigation" aria-label="Primary navigation">
+		<div class="navigation-heading">
+			<span class="navigation-kicker">Workspace</span>
+			<span class="navigation-rule" aria-hidden="true"></span>
+		</div>
+		<ul>
+			@for (destination of destinations; track destination.id) {
+				<li>
+					<a
+						[routerLink]="destination.route"
+						href="{{ destination.route }}"
+						routerLinkActive="is-active"
+						[routerLinkActiveOptions]="{ exact: true }"
+						ariaCurrentWhenActive="page"
+					>
+						<span class="navigation-link-marker" aria-hidden="true"></span>
+						<span>
+							<strong>{{ destination.label }}</strong>
+							<small>{{ destination.description }}</small>
+						</span>
+					</a>
+				</li>
+			}
+		</ul>
+	</nav>
+
+	@if (mobileOpen()) {
+		<div class="mobile-navigation-layer">
+			<button
+				class="navigation-backdrop"
+				type="button"
+				aria-label="Close navigation"
+				(click)="closeMenu()"
+			></button>
+			<nav
+				#mobileNavigation
+				id="mobile-navigation"
+				class="mobile-navigation"
+				tabindex="-1"
+				aria-label="Primary navigation"
+				(keydown.escape)="closeMenu()"
+			>
+				<div class="mobile-navigation-header">
+					<span class="navigation-kicker">Workspace</span>
+					<button class="navigation-close" type="button" (click)="closeMenu()">
+						<span aria-hidden="true">×</span>
+						<span>Close</span>
+					</button>
+				</div>
+				<ul>
+					@for (destination of destinations; track destination.id) {
+						<li>
+							<a
+								[routerLink]="destination.route"
+								href="{{ destination.route }}"
+								routerLinkActive="is-active"
+								[routerLinkActiveOptions]="{ exact: true }"
+								ariaCurrentWhenActive="page"
+								(click)="closeAfterNavigation()"
+							>
+								<strong>{{ destination.label }}</strong>
+								<small>{{ destination.description }}</small>
+							</a>
+						</li>
+					}
+				</ul>
+			</nav>
+		</div>
+	}
+</div>

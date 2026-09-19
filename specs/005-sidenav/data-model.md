@@ -14,7 +14,7 @@ Represents one available top-level application area.
 |---|---|---:|---|
 | `id` | stable string | yes | Unique within the catalog; used for identity and testing. |
 | `label` | user-facing string | yes | Non-empty, concise, and understandable without relying on an icon. |
-| `target` | application route target | yes | Must resolve to an available destination; no dead or speculative links. |
+| `target` | application route target | yes | Must resolve to an available destination; `/accounts` is the current approved target. |
 | `order` | catalog position | yes | Unique ordering is defined once and shared by both presentations. |
 
 ### Validation rules
@@ -30,15 +30,14 @@ Represents one available top-level application area.
 
 Represents how the same catalog is exposed at a given viewport width.
 
-| Range | Material presentation | Interaction state |
+| Range | CSS presentation | Interaction state |
 |---|---|---|
-| `320–767px` | Left/start drawer in `over` mode with backdrop | `closed` by default; `open` after trigger activation |
-| `768–1023px` | Persistent sidenav in `side` mode | Always visible; mobile state does not apply |
-| `1024px+` | Persistent sidenav in `side` mode | Always visible; mobile state does not apply |
+| `320–767px` | Left-side overlay drawer with backdrop | `closed` by default; `open` after trigger activation |
+| `768–1023px` | Persistent sidenav beside content | Always visible; mobile state does not apply |
+| `1024px+` | Persistent sidenav beside content | Always visible; mobile state does not apply |
 
-The viewport range is observed through the responsive layout boundary and is not persisted
-as application data. The initial catalog is empty until an approved route feature adds a
-destination.
+The viewport range is selected through CSS media queries and is not persisted as application
+data. The approved `/accounts` route is the first destination in the catalog.
 
 ## Mobile Menu State
 
@@ -52,9 +51,8 @@ Ephemeral UI state for the mobile presentation.
 ### State invariants
 
 - `open` MUST only be actionable in the mobile range.
-- The Material drawer MUST use `over` mode, `position="start"`, and a backdrop in the
-  mobile range.
-- The Material drawer MUST use `side` mode and remain visible in tablet and desktop
+- The mobile drawer MUST open from the left and use a backdrop in the mobile range.
+- The persistent navigation MUST remain visible beside content in tablet and desktop
   ranges.
 - The closed state MUST remove mobile navigation links from keyboard order and the
   accessibility tree.
@@ -63,15 +61,14 @@ Ephemeral UI state for the mobile presentation.
 - State MUST NOT be serialized to localStorage, IndexedDB, cookies, URL state, a remote
   service, or financial state.
 
-## Empty Destination Catalog
+## Available Destination Catalog
 
-The initial application has no configured routes. An empty catalog is valid and MUST:
+The application exposes the approved `/accounts` route. The catalog MUST:
 
 - render the named navigation shell and mobile trigger/drawer behavior;
-- render no actionable destination links;
-- render no active destination;
-- avoid creating or assuming an application route; and
-- remain ready for a later approved feature to add destinations.
+- render the accounts destination in both presentations;
+- derive the active state from the current route; and
+- remain ready for later approved destinations without adding speculative links.
 
 ## Active Destination
 
@@ -95,7 +92,7 @@ Navigation Destination[]
 
 Current Application Location ──derives──> Active Destination
 Mobile Trigger ──controls──> Mobile Menu State
-BreakpointObserver ──selects──> Navigation Presentation
+CSS media queries ──select──> Navigation Presentation
 ```
 
 No database schema, persistence boundary, API contract, or migration is required.

@@ -26,11 +26,22 @@
 
 .shell-header,
 .shell-main,
+.shell-body,
 .shell-footer {
 	position: relative;
 	z-index: 1;
 	width: min(100% - 2rem, 76rem);
 	margin-inline: auto;
+}
+
+.shell-body {
+	display: grid;
+	gap: 1rem;
+}
+
+.shell-content {
+	min-width: 0;
+	padding-block: 2rem 4rem;
 }
 
 .shell-header {
@@ -457,8 +468,19 @@
 @media (min-width: 768px) {
 	.shell-header,
 	.shell-main,
+	.shell-body,
 	.shell-footer {
 		width: min(100% - 4rem, 76rem);
+	}
+
+	.shell-body {
+		grid-template-columns: minmax(12rem, 0.25fr) minmax(0, 1fr);
+		align-items: start;
+		gap: 1.5rem;
+	}
+
+	.shell-content {
+		padding-block: 0 4rem;
 	}
 
 	.hero-grid {
@@ -473,6 +495,10 @@
 @media (min-width: 1024px) {
 	.shell-header {
 		padding-block: 1.5rem;
+	}
+
+	.shell-body {
+		grid-template-columns: minmax(13rem, 0.3fr) minmax(0, 1fr);
 	}
 
 	.summary-grid {
