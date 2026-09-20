@@ -433,3 +433,145 @@
 		text-align: left;
 	}
 }
+
+/* Diario financiero: historia primero, captura como instrumento oscuro de acción. */
+.transaction-page {
+	gap: 2.75rem;
+}
+
+.transaction-page-header {
+	position: relative;
+	overflow: hidden;
+	align-items: start;
+	padding: clamp(1.5rem, 4vw, 3rem);
+	border-radius: 2rem;
+	background:
+		radial-gradient(circle at 100% 0%, rgb(217 119 6 / 22%), transparent 18rem),
+		linear-gradient(135deg, var(--forest-950), var(--forest-800));
+	color: var(--content-inverse);
+	box-shadow: var(--shadow-card);
+}
+
+.transaction-page-header::after {
+	position: absolute;
+	right: -4rem;
+	bottom: -7rem;
+	width: 18rem;
+	height: 18rem;
+	border: 1px solid rgb(209 250 229 / 22%);
+	border-radius: 50%;
+	content: "";
+	pointer-events: none;
+}
+
+.transaction-page-header > * {
+	position: relative;
+	z-index: 1;
+}
+
+.transaction-page-header .eyebrow,
+.transaction-page-header .transaction-page-intro {
+	color: var(--leaf-100);
+}
+
+.transaction-page-header .session-badge {
+	border-color: rgb(254 243 199 / 35%);
+	background: rgb(254 243 199 / 13%);
+	color: var(--amber-100);
+}
+
+.transaction-layout {
+	grid-template-columns: minmax(0, 1.35fr) minmax(19rem, 0.65fr);
+	gap: 1.5rem;
+}
+
+.transaction-history-card {
+	order: 1;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	box-shadow: none;
+}
+
+.transaction-history-card .card-heading {
+	padding-inline: 0.35rem;
+}
+
+.transaction-form-card {
+	order: 2;
+	position: relative;
+	border-color: var(--forest-900);
+	background:
+		radial-gradient(
+			circle at 100% 0%,
+			rgb(209 250 229 / 16%),
+			transparent 13rem
+		),
+		linear-gradient(160deg, var(--forest-950), var(--forest-800));
+	color: var(--content-inverse);
+	box-shadow: var(--shadow-card);
+}
+
+.transaction-form-card .card-heading h2,
+.transaction-form-card .field-group label {
+	color: var(--content-inverse);
+}
+
+.transaction-form-card .card-heading .eyebrow,
+.transaction-form-card .field-hint,
+.transaction-form-card .optional-note {
+	color: var(--leaf-100);
+}
+
+.transaction-form-card .field-group input,
+.transaction-form-card .field-group select,
+.transaction-form-card .field-group textarea {
+	border-color: rgb(209 250 229 / 35%);
+	background: rgb(255 255 255 / 10%);
+	color: var(--content-inverse);
+}
+
+.transaction-form-card .field-group select option {
+	background: var(--forest-950);
+	color: var(--content-inverse);
+}
+
+.transaction-form-card .currency-preview {
+	background: rgb(255 255 255 / 10%);
+	color: var(--leaf-100);
+}
+
+.transaction-form-card .currency-preview strong {
+	color: var(--amber-100);
+}
+
+.transaction-form-card .primary-action {
+	border-color: var(--amber-100);
+	background: var(--amber-100);
+	color: var(--forest-950);
+}
+
+.transaction-list-item {
+	border-color: transparent;
+	background: var(--surface-elevated);
+	box-shadow: 0 0.5rem 1.25rem rgb(15 23 42 / 5%);
+	transition:
+		transform 160ms ease,
+		box-shadow 160ms ease;
+}
+
+.transaction-list-item:hover {
+	box-shadow: 0 0.8rem 1.75rem rgb(15 23 42 / 9%);
+	transform: translateX(0.2rem);
+}
+
+@media (max-width: 800px) {
+	.transaction-layout {
+		grid-template-columns: 1fr;
+	}
+
+	.transaction-form-card,
+	.transaction-history-card {
+		order: initial;
+	}
+}

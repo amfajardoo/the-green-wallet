@@ -164,7 +164,7 @@
 			} @else {
 				<ul class="account-list">
 					@for (account of store.entities(); track account.id) {
-						<li class="account-list-item">
+						<li class="account-list-item" [class.liability-row]="account.type === 'credit-card'">
 							<div class="account-list-icon" [class.liability-icon]="account.type === 'credit-card'" aria-hidden="true">
 								{{ account.type === 'credit-card' ? 'TC' : 'A' }}
 							</div>

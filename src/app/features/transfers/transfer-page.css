@@ -167,3 +167,112 @@
 		padding-inline: 1rem;
 	}
 }
+
+/* Flujo pareado: una superficie azul separa el traslado de ingresos y gastos. */
+.transfer-page {
+	gap: 2.75rem;
+}
+
+.transfer-page-header {
+	position: relative;
+	overflow: hidden;
+	align-items: start;
+	padding: clamp(1.5rem, 4vw, 3rem);
+	border: 1px solid rgb(7 89 133 / 16%);
+	border-radius: 2rem;
+	background:
+		linear-gradient(125deg, rgb(240 249 255 / 96%), rgb(224 242 254 / 88%)),
+		var(--surface-elevated);
+	box-shadow: 0 1rem 2.5rem rgb(7 89 133 / 7%);
+}
+
+.transfer-page-header::after {
+	position: absolute;
+	right: 2rem;
+	top: -5rem;
+	width: 14rem;
+	height: 14rem;
+	border: 1px solid rgb(7 89 133 / 12%);
+	border-radius: 50%;
+	content: "";
+	pointer-events: none;
+}
+
+.transfer-page-header > * {
+	position: relative;
+	z-index: 1;
+}
+
+.transfer-page-header .session-badge {
+	border-color: rgb(7 89 133 / 16%);
+	background: rgb(255 255 255 / 65%);
+	color: var(--info);
+}
+
+.transfer-layout {
+	grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+	gap: 1.5rem;
+}
+
+.transfer-form-card {
+	position: relative;
+	border-top: 0.35rem solid var(--info);
+	background: var(--surface-elevated);
+	box-shadow: 0 1rem 2.5rem rgb(7 89 133 / 8%);
+}
+
+.transfer-form-card::before {
+	position: absolute;
+	right: 1.5rem;
+	top: 1.5rem;
+	width: 3rem;
+	height: 3rem;
+	border: 1px solid rgb(7 89 133 / 15%);
+	border-radius: 50%;
+	content: "↔";
+	color: var(--info);
+	font-size: 1.4rem;
+	line-height: 3rem;
+	text-align: center;
+}
+
+.transfer-history-card {
+	border: 0;
+	background: transparent;
+	box-shadow: none;
+}
+
+.transfer-history-card .card-heading {
+	padding-inline: 0.35rem;
+}
+
+.transfer-list-item {
+	border-color: rgb(7 89 133 / 13%);
+	border-left: 4px solid var(--info);
+	background: var(--surface-elevated);
+	box-shadow: 0 0.6rem 1.5rem rgb(7 89 133 / 6%);
+	transition:
+		transform 160ms ease,
+		box-shadow 160ms ease;
+}
+
+.transfer-list-item:hover {
+	box-shadow: 0 0.9rem 1.8rem rgb(7 89 133 / 11%);
+	transform: translateX(0.2rem);
+}
+
+.transfer-type-mark {
+	background: var(--info-subtle);
+	color: var(--info);
+}
+
+@media (max-width: 800px) {
+	.transfer-layout {
+		grid-template-columns: 1fr;
+	}
+
+	.transfer-form-card,
+	.transfer-history-card {
+		position: static;
+	}
+}

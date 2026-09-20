@@ -116,6 +116,7 @@ usable and understandable on narrow screens and with assistive interaction patte
 - [x] T023 Run the production/SSR build and inspect the rendered route behavior using `package.json` and `specs/010-visual-refresh-esco/quickstart.md`.
 - [x] T024 Review responsive breakpoint coverage for 320, 767, 768, 1024, and 1280 CSS pixels in `src/app/features/accounts/account-page.css`, `src/app/navigation/sidenav.component.css`, and `src/styles/shell.css`, then smoke-check the Spanish SSR entry point against `specs/010-visual-refresh-esco/quickstart.md`.
 - [x] T025 Run `git diff --check`, review the diff against `specs/010-visual-refresh-esco/spec.md`, and confirm only Colombian validation copy changed under `src/app/core/accounts/`, with no account model, money, or store behavior changes.
+- [x] T026 Apply distinct visual compositions to the account panorama, transaction journal, and transfer flow so shared visual language does not collapse into a repeated card layout, preserving all financial behavior and accessibility checks.
 
 ---
 

@@ -415,3 +415,140 @@
 		text-align: left;
 	}
 }
+
+/* Panorama editorial: el inventario ocupa el foco y la captura vive como panel de acción. */
+.account-page {
+	gap: 2.75rem;
+}
+
+.account-page-header {
+	padding-bottom: 1.75rem;
+	border-bottom: 1px solid var(--border);
+}
+
+.account-layout {
+	grid-template-columns: minmax(0, 1.4fr) minmax(19rem, 0.6fr);
+	gap: 1.25rem;
+}
+
+.account-list-card {
+	grid-column: 1;
+	grid-row: 1;
+	border-radius: 2rem;
+	background: rgb(255 255 255 / 88%);
+	box-shadow: var(--shadow-card);
+}
+
+.account-form-card {
+	grid-column: 2;
+	grid-row: 1;
+	position: relative;
+	overflow: hidden;
+	border-color: var(--forest-900);
+	background:
+		radial-gradient(
+			circle at 100% 0%,
+			rgb(209 250 229 / 18%),
+			transparent 12rem
+		),
+		linear-gradient(150deg, var(--forest-950), var(--forest-800));
+	box-shadow: var(--shadow-card);
+	color: var(--content-inverse);
+}
+
+.account-form-card::after {
+	position: absolute;
+	right: -5rem;
+	bottom: -6rem;
+	width: 14rem;
+	height: 14rem;
+	border: 1px solid rgb(209 250 229 / 20%);
+	border-radius: 50%;
+	content: "";
+	pointer-events: none;
+}
+
+.account-form-card .card-heading,
+.account-form-card form {
+	position: relative;
+	z-index: 1;
+}
+
+.account-form-card .card-heading h2,
+.account-form-card .field-group label {
+	color: var(--content-inverse);
+}
+
+.account-form-card .card-heading .eyebrow,
+.account-form-card .field-hint,
+.account-form-card .optional-note {
+	color: var(--leaf-100);
+}
+
+.account-form-card .optional-note {
+	opacity: 0.8;
+}
+
+.account-form-card .field-group input,
+.account-form-card .field-group select {
+	border-color: rgb(209 250 229 / 35%);
+	background: rgb(255 255 255 / 10%);
+	color: var(--content-inverse);
+}
+
+.account-form-card .field-group select option {
+	background: var(--forest-950);
+	color: var(--content-inverse);
+}
+
+.account-form-card .primary-action {
+	border-color: var(--amber-100);
+	background: var(--amber-100);
+	color: var(--forest-950);
+}
+
+.account-form-card .primary-action:hover {
+	background: var(--content-inverse);
+}
+
+.account-list-item {
+	position: relative;
+	border-color: transparent;
+	border-left: 4px solid var(--positive);
+	background: var(--surface);
+	transition:
+		border-color 160ms ease,
+		transform 160ms ease,
+		box-shadow 160ms ease;
+}
+
+.account-list-item:hover {
+	border-color: var(--border);
+	border-left-color: var(--positive);
+	box-shadow: 0 0.75rem 1.5rem rgb(15 23 42 / 7%);
+	transform: translateX(0.2rem);
+}
+
+.account-list-item.liability-row {
+	border-left-color: var(--liability);
+}
+
+.account-list-item.liability-row:hover {
+	border-left-color: var(--liability);
+}
+
+@media (max-width: 800px) {
+	.account-layout {
+		grid-template-columns: 1fr;
+	}
+
+	.account-list-card,
+	.account-form-card {
+		grid-column: 1;
+		grid-row: auto;
+	}
+
+	.account-form-card {
+		order: -1;
+	}
+}
