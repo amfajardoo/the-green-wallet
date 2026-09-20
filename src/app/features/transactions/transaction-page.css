@@ -526,14 +526,26 @@
 .transaction-form-card .field-group input,
 .transaction-form-card .field-group select,
 .transaction-form-card .field-group textarea {
-	border-color: rgb(209 250 229 / 35%);
-	background: rgb(255 255 255 / 10%);
-	color: var(--content-inverse);
+	border-color: var(--leaf-100);
+	background: var(--slate-50);
+	color: var(--slate-950);
 }
 
 .transaction-form-card .field-group select option {
-	background: var(--forest-950);
-	color: var(--content-inverse);
+	background: var(--slate-50);
+	color: var(--slate-950);
+}
+
+.transaction-form-card .field-group input:focus,
+.transaction-form-card .field-group select:focus,
+.transaction-form-card .field-group textarea:focus {
+	border-color: var(--amber-500);
+	box-shadow: 0 0 0 0.2rem rgb(254 243 199 / 45%);
+}
+
+.transaction-form-card :focus-visible {
+	outline-color: var(--amber-100);
+	outline-offset: 2px;
 }
 
 .transaction-form-card .currency-preview {
