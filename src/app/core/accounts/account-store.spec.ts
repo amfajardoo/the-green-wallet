@@ -193,6 +193,107 @@ describe("AccountStore", () => {
 		expect(store.accountCount()).toBe(0);
 	});
 
+	it("conserves exact money across a paired same-currency transfer", () => {
+		const store = createStore();
+		const source = store.createAccount({
+			name: "Ahorros",
+			type: "savings",
+			currency: "COP",
+			openingBalance: "100000",
+		});
+		const destination = store.createAccount({
+			name: "Efectivo",
+			type: "cash",
+			currency: "COP",
+			openingBalance: "10000",
+		});
+
+		expect(source.success).toBe(true);
+		expect(destination.success).toBe(true);
+		if (!source.success || !destination.success) {
+			return;
+		}
+
+		const result = store.postTransfer({
+			sourceAccountId: source.account.id,
+			destinationAccountId: destination.account.id,
+			amount: "25000",
+			currency: "COP",
+			occurredAt: "2026-09-19T08:00",
+			description: "Organizar efectivo",
+		});
+
+		expect(result).toMatchObject({
+			success: true,
+			transfer: {
+				id: "transfer-1",
+				sourceAccountId: source.account.id,
+				destinationAccountId: destination.account.id,
+			},
+		});
+		expect(
+			store.entities().find(({ id }) => id === source.account.id)?.balance,
+		).toEqual({
+			currency: "COP",
+			minorUnits: 75000n,
+		});
+		expect(
+			store.entities().find(({ id }) => id === destination.account.id)?.balance,
+		).toEqual({
+			currency: "COP",
+			minorUnits: 35000n,
+		});
+		expect(store.copSummary().availableMinorUnits).toBe(110000n);
+		expect(store.transferCount()).toBe(1);
+		expect(store.transfers()[0].id).toBe("transfer-1");
+	});
+
+	it("rejects transfer failures without changing either side or history", () => {
+		const store = createStore();
+		const source = store.createAccount({
+			name: "Ahorros",
+			type: "savings",
+			currency: "COP",
+			openingBalance: "100000",
+		});
+		const destination = store.createAccount({
+			name: "Dólares",
+			type: "cash",
+			currency: "USD",
+			openingBalance: "10.00",
+		});
+
+		expect(source.success).toBe(true);
+		expect(destination.success).toBe(true);
+		if (!source.success || !destination.success) {
+			return;
+		}
+
+		const before = {
+			accounts: store.entities(),
+			cop: store.copSummary(),
+			usd: store.usdSummary(),
+			transfers: store.transfers(),
+		};
+		const crossCurrency = store.postTransfer({
+			sourceAccountId: source.account.id,
+			destinationAccountId: destination.account.id,
+			amount: "25000",
+			currency: "COP",
+			occurredAt: "2026-09-19T08:00",
+			description: "No convertir",
+		});
+
+		expect(crossCurrency).toMatchObject({
+			success: false,
+			error: { code: "currency-mismatch" },
+		});
+		expect(store.entities()).toEqual(before.accounts);
+		expect(store.copSummary()).toEqual(before.cop);
+		expect(store.usdSummary()).toEqual(before.usd);
+		expect(store.transfers()).toEqual(before.transfers);
+	});
+
 	it("rejects invalid operations without changing the complete session state", () => {
 		const store = createStore();
 		store.createAccount({

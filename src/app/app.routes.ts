@@ -15,6 +15,13 @@ export const routes: Routes = [
 				({ TransactionPage }) => TransactionPage,
 			),
 	},
+	{
+		path: "transfers",
+		loadComponent: () =>
+			import("./features/transfers/transfer-page").then(
+				({ TransferPage }) => TransferPage,
+			),
+	},
 	{ path: "", pathMatch: "full", redirectTo: "accounts" },
 	{ path: "**", redirectTo: "accounts" },
 ];

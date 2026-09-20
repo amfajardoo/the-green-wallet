@@ -13,4 +13,10 @@ export const NAVIGATION_DESTINATIONS: readonly NavigationDestination[] = [
 		route: "/transactions",
 		description: "Registra ingresos y gastos con su efecto exacto.",
 	},
+	{
+		id: "transfers",
+		label: "Transferencias",
+		route: "/transfers",
+		description: "Mueve fondos entre tus cuentas sin convertir monedas.",
+	},
 ];

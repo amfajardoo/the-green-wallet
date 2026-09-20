@@ -35,6 +35,16 @@ import {
 	type TransactionOperationResult,
 } from "./transaction-model";
 import { validatePostTransactionInput } from "./transaction-validation";
+import { sortTransfersNewestFirst } from "./transfer-balance";
+import {
+	INITIAL_TRANSFER_SEQUENCE,
+	type PostTransferInput,
+	TRANSFER_ID_PREFIX,
+	TRANSFER_SEQUENCE_INCREMENT,
+	type Transfer,
+	type TransferOperationResult,
+} from "./transfer-model";
+import { validatePostTransferInput } from "./transfer-validation";
 
 const OPENING_EVENT_SUFFIX = "-opening";
 const TRANSACTION_COLLECTION = "transaction";
@@ -43,19 +53,29 @@ const transactionConfig = {
 	collection: TRANSACTION_COLLECTION,
 } as const;
 const transactionCollection = { collection: TRANSACTION_COLLECTION } as const;
+const TRANSFER_COLLECTION = "transfer";
+const transferConfig = {
+	entity: type<Transfer>(),
+	collection: TRANSFER_COLLECTION,
+} as const;
+const transferCollection = { collection: TRANSFER_COLLECTION } as const;
 
 export const AccountStore = signalStore(
 	{ providedIn: "root" },
 	withEntities<Account>(),
 	withEntities(transactionConfig),
+	withEntities(transferConfig),
 	withState({
 		accountSequence: INITIAL_ACCOUNT_SEQUENCE,
 		transactionSequence: INITIAL_TRANSACTION_SEQUENCE,
+		transferSequence: INITIAL_TRANSFER_SEQUENCE,
 	}),
-	withComputed(({ entities, transactionEntities }) => ({
+	withComputed(({ entities, transactionEntities, transferEntities }) => ({
 		accountCount: () => entities().length,
 		transactionCount: () => transactionEntities().length,
 		transactions: () => sortTransactionsNewestFirst(transactionEntities()),
+		transferCount: () => transferEntities().length,
+		transfers: () => sortTransfersNewestFirst(transferEntities()),
 		copSummary: () => summarizeAccounts(entities(), CURRENCIES[0]),
 		usdSummary: () => summarizeAccounts(entities(), CURRENCIES[1]),
 	})),
@@ -124,6 +144,45 @@ export const AccountStore = signalStore(
 
 			return { success: true, transaction };
 		},
+		postTransfer(input: PostTransferInput): TransferOperationResult {
+			const validation = validatePostTransferInput(
+				input,
+				store.entities(),
+				store.transactionEntities(),
+				store.transferEntities(),
+			);
+
+			if (!validation.success) {
+				return validation;
+			}
+
+			const transferId = `${TRANSFER_ID_PREFIX}${store.transferSequence()}`;
+			const transfer: Transfer = {
+				id: transferId,
+				sourceAccountId: validation.value.sourceAccountId,
+				destinationAccountId: validation.value.destinationAccountId,
+				amount: validation.value.amount,
+				occurredAt: validation.value.occurredAt,
+				description: validation.value.description,
+			};
+			const nextTransfers = [...store.transferEntities(), transfer];
+			const nextAccounts = projectAccounts(
+				store.entities(),
+				store.transactionEntities(),
+				nextTransfers,
+			);
+
+			patchState(
+				store,
+				setAllEntities(nextAccounts),
+				addEntity(transfer, transferConfig),
+				({ transferSequence }) => ({
+					transferSequence: transferSequence + TRANSFER_SEQUENCE_INCREMENT,
+				}),
+			);
+
+			return { success: true, transfer };
+		},
 		resetSession(): void {
 			patchState(
 				store,
@@ -132,9 +191,14 @@ export const AccountStore = signalStore(
 					[],
 					transactionCollection,
 				),
+				setAllEntities<Transfer, typeof TRANSFER_COLLECTION>(
+					[],
+					transferCollection,
+				),
 				{
 					accountSequence: INITIAL_ACCOUNT_SEQUENCE,
 					transactionSequence: INITIAL_TRANSACTION_SEQUENCE,
+					transferSequence: INITIAL_TRANSFER_SEQUENCE,
 				},
 			);
 		},

@@ -1,0 +1,203 @@
+<section class="transfer-page" aria-labelledby="transfer-page-title">
+	<header class="transfer-page-header">
+		<div>
+			<p class="eyebrow">Espacio de sesión / transferencias</p>
+			<h1 id="transfer-page-title">Mueve tu dinero sin perder el hilo.</h1>
+			<p class="transfer-page-intro">
+				Traslada fondos entre cuentas de dinero disponible en la misma moneda. El origen baja,
+				el destino sube y la historia conserva una sola operación pareada.
+			</p>
+		</div>
+		<div class="session-badge">
+			<span class="session-badge-dot" aria-hidden="true"></span>
+			<span>{{ store.transferCount() }} transferencias en sesión</span>
+		</div>
+	</header>
+
+	<div class="transfer-layout">
+		<section class="transfer-form-card" aria-labelledby="transfer-form-title">
+			<div class="card-heading">
+				<div>
+					<p class="eyebrow">01 / Mover fondos</p>
+					<h2 id="transfer-form-title">Elige los dos lados</h2>
+				</div>
+				<span class="optional-note">Sin conversiones automáticas</span>
+			</div>
+
+			@if (!hasTransferEndpoints()) {
+				<div class="empty-guidance" role="status">
+					<strong>Crea al menos dos cuentas.</strong>
+					<p>Necesitas un origen y un destino para hacer un traslado interno.</p>
+				</div>
+			}
+
+			<form (submit)="onSubmit($event)" novalidate>
+				<div class="field-group">
+					<label for="transfer-source">Cuenta de origen</label>
+					<select
+						id="transfer-source"
+						[formField]="transferForm.sourceAccountId"
+						[attr.aria-invalid]="transferForm.sourceAccountId().invalid() ? 'true' : undefined"
+						[attr.aria-describedby]="
+							transferForm.sourceAccountId().touched() && transferForm.sourceAccountId().errors().length > 0
+								? 'transfer-source-error'
+								: 'transfer-source-hint'
+						"
+					>
+						<option value="">Selecciona de dónde sale</option>
+						@for (account of assetAccounts(); track account.id) {
+							<option [value]="account.id">
+								{{ account.name }} · {{ account.currency }} · {{ formatBalance(account) }}
+							</option>
+						}
+					</select>
+					<p id="transfer-source-hint" class="field-hint">Solo puedes trasladar el saldo disponible de una cuenta de activo.</p>
+					@if (transferForm.sourceAccountId().touched() && transferForm.sourceAccountId().errors().length > 0) {
+						<p id="transfer-source-error" class="field-error" role="alert">
+							{{ transferForm.sourceAccountId().errors()[0].message }}
+						</p>
+					} @else if (fieldSubmissionError('sourceAccount'); as message) {
+						<p id="transfer-source-error" class="field-error" role="alert">{{ message }}</p>
+					}
+				</div>
+
+				<div class="transfer-arrow" aria-hidden="true">↓</div>
+
+				<div class="field-group">
+					<label for="transfer-destination">Cuenta de destino</label>
+					<select
+						id="transfer-destination"
+						[formField]="transferForm.destinationAccountId"
+						[attr.aria-invalid]="transferForm.destinationAccountId().invalid() ? 'true' : undefined"
+						[attr.aria-describedby]="
+							transferForm.destinationAccountId().touched() && transferForm.destinationAccountId().errors().length > 0
+								? 'transfer-destination-error'
+								: 'transfer-destination-hint'
+						"
+					>
+						<option value="">Selecciona a dónde llega</option>
+						@for (account of destinationAccounts(); track account.id) {
+							<option [value]="account.id">
+								{{ account.name }} · {{ account.currency }} · {{ formatBalance(account) }}
+							</option>
+						}
+					</select>
+					<p id="transfer-destination-hint" class="field-hint">El destino debe ser otra cuenta de activo en la misma moneda.</p>
+					@if (transferForm.destinationAccountId().touched() && transferForm.destinationAccountId().errors().length > 0) {
+						<p id="transfer-destination-error" class="field-error" role="alert">
+							{{ transferForm.destinationAccountId().errors()[0].message }}
+						</p>
+					} @else if (fieldSubmissionError('destinationAccount'); as message) {
+						<p id="transfer-destination-error" class="field-error" role="alert">{{ message }}</p>
+					}
+				</div>
+
+				<div class="currency-preview" aria-live="polite">
+					<span>Moneda del traslado</span>
+					<strong>{{ selectedCurrency() || 'Selecciona un origen' }}</strong>
+				</div>
+
+				<div class="field-group">
+					<label for="transfer-amount">Valor</label>
+					<input
+						id="transfer-amount"
+						type="text"
+						inputmode="decimal"
+						autocomplete="off"
+						placeholder="p. ej., 25000"
+						[formField]="transferForm.amount"
+						[attr.aria-invalid]="transferForm.amount().invalid() || fieldSubmissionError('amount') ? 'true' : undefined"
+						aria-describedby="transfer-amount-hint"
+					/>
+					<p id="transfer-amount-hint" class="field-hint">COP acepta enteros; USD admite máximo dos decimales.</p>
+					@if (transferForm.amount().touched() && transferForm.amount().errors().length > 0) {
+						<p class="field-error" role="alert">{{ transferForm.amount().errors()[0].message }}</p>
+					} @else if (fieldSubmissionError('amount'); as message) {
+						<p class="field-error" role="alert">{{ message }}</p>
+					}
+				</div>
+
+				<div class="field-group">
+					<label for="transfer-date">Fecha y hora</label>
+					<input id="transfer-date" type="datetime-local" [formField]="transferForm.occurredAt" />
+					@if (transferForm.occurredAt().touched() && transferForm.occurredAt().errors().length > 0) {
+						<p class="field-error" role="alert">{{ transferForm.occurredAt().errors()[0].message }}</p>
+					} @else if (fieldSubmissionError('occurredAt'); as message) {
+						<p class="field-error" role="alert">{{ message }}</p>
+					}
+				</div>
+
+				<div class="field-group">
+					<label for="transfer-description">Descripción</label>
+					<textarea
+						id="transfer-description"
+						rows="3"
+						placeholder="p. ej., Pasar efectivo para la semana"
+						[formField]="transferForm.description"
+						[attr.aria-invalid]="transferForm.description().invalid() || fieldSubmissionError('description') ? 'true' : undefined"
+					></textarea>
+					@if (transferForm.description().touched() && transferForm.description().errors().length > 0) {
+						<p class="field-error" role="alert">{{ transferForm.description().errors()[0].message }}</p>
+					} @else if (fieldSubmissionError('description'); as message) {
+						<p class="field-error" role="alert">{{ message }}</p>
+					}
+				</div>
+
+				@if (submissionError(); as error) {
+					<p class="form-error" role="alert">{{ error.message }}</p>
+				}
+				@if (successMessage(); as message) {
+					<p class="form-success" role="status">{{ message }}</p>
+				}
+
+				<button class="primary-action" type="submit" [disabled]="!hasTransferEndpoints()">
+					Guardar traslado
+				</button>
+			</form>
+		</section>
+
+		<section class="transfer-history-card" aria-labelledby="transfer-history-title" aria-live="polite">
+			<div class="card-heading">
+				<div>
+					<p class="eyebrow">02 / Revisar traslados</p>
+					<h2 id="transfer-history-title">Transferencias de esta sesión</h2>
+				</div>
+				<span class="transaction-count">{{ store.transferCount() }} registradas</span>
+			</div>
+
+			@if (history().length === 0) {
+				<div class="list-empty">
+					<span class="list-empty-mark" aria-hidden="true">↔</span>
+					<h3>Aún no hay transferencias</h3>
+					<p>Los traslados internos aparecerán aquí como operaciones pareadas.</p>
+				</div>
+			} @else {
+				<ol class="transfer-list">
+					@for (item of history(); track item.transfer.id) {
+						<li class="transfer-list-item">
+							<div class="transfer-type-mark" aria-hidden="true">↔</div>
+							<div class="transfer-list-content">
+								<div class="transfer-list-topline">
+									<h3>{{ item.transfer.description }}</h3>
+									<span class="transaction-kind">Traslado</span>
+								</div>
+								<p>
+									{{ item.source?.name || 'Origen no disponible' }}
+									<span aria-hidden="true">→</span>
+									{{ item.destination?.name || 'Destino no disponible' }}
+								</p>
+								<small>{{ operationLabel(item.transfer.id) }} · {{ formatDate(item.transfer.occurredAt) }}</small>
+							</div>
+							<strong class="transfer-amount">{{ formatAmount(item.transfer) }}</strong>
+						</li>
+					}
+				</ol>
+			}
+
+			<p class="session-note">
+				<span class="session-note-icon" aria-hidden="true">↔</span>
+				Los traslados son de solo lectura y viven durante esta sesión. La persistencia llegará después.
+			</p>
+		</section>
+	</div>
+</section>

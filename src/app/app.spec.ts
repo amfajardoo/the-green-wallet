@@ -37,4 +37,10 @@ describe("App", () => {
 
 		expect(transactionRoute?.loadComponent).toBeTypeOf("function");
 	});
+
+	it("keeps the transfer workspace lazy and reachable", () => {
+		const transferRoute = routes.find((route) => route.path === "transfers");
+
+		expect(transferRoute?.loadComponent).toBeTypeOf("function");
+	});
 });

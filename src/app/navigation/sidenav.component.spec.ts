@@ -82,4 +82,15 @@ describe("Sidenav", () => {
 		expect(navigation.textContent).toContain("Registra ingresos y gastos");
 		expect(navigation.querySelector('a[href="/transactions"]')).toBeTruthy();
 	});
+
+	it("exposes transfers in the main navigation", () => {
+		const fixture = createFixture();
+		const navigation = fixture.nativeElement.querySelector(
+			".persistent-navigation",
+		) as HTMLElement;
+
+		expect(navigation.textContent).toContain("Transferencias");
+		expect(navigation.textContent).toContain("Mueve fondos entre tus cuentas");
+		expect(navigation.querySelector('a[href="/transfers"]')).toBeTruthy();
+	});
 });

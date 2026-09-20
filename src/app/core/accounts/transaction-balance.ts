@@ -1,5 +1,7 @@
 import type { Account, AccountSummary, Currency, Money } from "./account-model";
 import type { Transaction } from "./transaction-model";
+import { transferEffectMinorUnits } from "./transfer-balance";
+import type { Transfer } from "./transfer-model";
 
 const ZERO_MINOR_UNITS = 0n;
 const ACCOUNT_KIND_ASSET = "asset";
@@ -31,6 +33,7 @@ export function transactionEffectMinorUnits(
 export function projectAccountBalance(
 	account: Account,
 	transactions: readonly Transaction[],
+	transfers: readonly Transfer[] = [],
 ): Money {
 	let minorUnits = account.openingBalance.minorUnits;
 
@@ -43,16 +46,27 @@ export function projectAccountBalance(
 		}
 	}
 
+	for (const transfer of transfers) {
+		if (
+			(transfer.sourceAccountId === account.id ||
+				transfer.destinationAccountId === account.id) &&
+			transfer.amount.currency === account.currency
+		) {
+			minorUnits += transferEffectMinorUnits(account, transfer);
+		}
+	}
+
 	return { currency: account.currency, minorUnits };
 }
 
 export function projectAccounts(
 	accounts: readonly Account[],
 	transactions: readonly Transaction[],
+	transfers: readonly Transfer[] = [],
 ): Account[] {
 	return accounts.map((account) => ({
 		...account,
-		balance: projectAccountBalance(account, transactions),
+		balance: projectAccountBalance(account, transactions, transfers),
 	}));
 }
 
