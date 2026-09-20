@@ -79,6 +79,120 @@ describe("AccountStore", () => {
 		});
 	});
 
+	it("posts income and asset expenses atomically with derived balances", () => {
+		const store = createStore();
+		const accountResult = store.createAccount({
+			name: "Principal",
+			type: "checking",
+			currency: "COP",
+			openingBalance: "100000",
+		});
+
+		expect(accountResult.success).toBe(true);
+		if (!accountResult.success) {
+			return;
+		}
+
+		const income = store.postTransaction({
+			type: "income",
+			accountId: accountResult.account.id,
+			amount: "25000",
+			currency: "COP",
+			occurredAt: "2026-09-19T08:00",
+			description: "Pago",
+		});
+		const expense = store.postTransaction({
+			type: "expense",
+			accountId: accountResult.account.id,
+			amount: "10000",
+			currency: "COP",
+			occurredAt: "2026-09-20T08:00",
+			description: "Mercado",
+		});
+
+		expect(income.success).toBe(true);
+		expect(expense.success).toBe(true);
+		expect(store.entities()[0].balance).toEqual({
+			currency: "COP",
+			minorUnits: 115000n,
+		});
+		expect(store.transactionCount()).toBe(2);
+		expect(store.transactions().map(({ id }) => id)).toEqual([
+			"transaction-2",
+			"transaction-1",
+		]);
+	});
+
+	it("keeps rejected posts out of balances, summaries, and history", () => {
+		const store = createStore();
+		const accountResult = store.createAccount({
+			name: "Principal",
+			type: "checking",
+			currency: "COP",
+			openingBalance: "100000",
+		});
+
+		expect(accountResult.success).toBe(true);
+		if (!accountResult.success) {
+			return;
+		}
+
+		const before = {
+			accounts: store.entities(),
+			summary: store.copSummary(),
+			transactions: store.transactions(),
+		};
+		const rejected = store.postTransaction({
+			type: "expense",
+			accountId: accountResult.account.id,
+			amount: "100001",
+			currency: "COP",
+			occurredAt: "2026-09-19T08:00",
+			description: "Compra imposible",
+		});
+
+		expect(rejected).toMatchObject({
+			success: false,
+			error: { code: "insufficient-balance" },
+		});
+		expect(store.entities()).toEqual(before.accounts);
+		expect(store.copSummary()).toEqual(before.summary);
+		expect(store.transactions()).toEqual(before.transactions);
+	});
+
+	it("keeps credit-card expenses as liabilities and resets both collections", () => {
+		const store = createStore();
+		const accountResult = store.createAccount({
+			name: "Tarjeta",
+			type: "credit-card",
+			currency: "USD",
+		});
+
+		expect(accountResult.success).toBe(true);
+		if (!accountResult.success) {
+			return;
+		}
+
+		store.postTransaction({
+			type: "expense",
+			accountId: accountResult.account.id,
+			amount: "12.50",
+			currency: "USD",
+			occurredAt: "2026-09-19T08:00",
+			description: "Compra",
+		});
+
+		expect(store.usdSummary().outstandingMinorUnits).toBe(1250n);
+		expect(store.entities()[0].balance.minorUnits).toBe(1250n);
+		expect(store.transactionCount()).toBe(1);
+
+		store.resetSession();
+
+		expect(store.transactionCount()).toBe(0);
+		expect(store.transactions()).toEqual([]);
+		expect(store.accountCount()).toBe(0);
+	});
+
 	it("rejects invalid operations without changing the complete session state", () => {
 		const store = createStore();
 		store.createAccount({

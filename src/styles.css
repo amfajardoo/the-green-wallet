@@ -2,3 +2,4 @@
 @import "./styles/theme.css";
 @import "./styles/shell.css";
 @import "./app/features/accounts/account-page.css";
+@import "./app/features/transactions/transaction-page.css";

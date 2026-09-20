@@ -1,6 +1,7 @@
 import {
 	patchState,
 	signalStore,
+	type,
 	withComputed,
 	withMethods,
 	withState,
@@ -15,58 +16,48 @@ import {
 	ACCOUNT_SEQUENCE_INCREMENT,
 	type Account,
 	type AccountOperationResult,
-	type AccountSummary,
 	type CreateAccountInput,
 	CURRENCIES,
-	type Currency,
 	INITIAL_ACCOUNT_SEQUENCE,
 } from "./account-model";
 import { validateCreateAccountInput } from "./account-validation";
+import {
+	projectAccounts,
+	sortTransactionsNewestFirst,
+	summarizeAccounts,
+} from "./transaction-balance";
+import {
+	INITIAL_TRANSACTION_SEQUENCE,
+	type PostTransactionInput,
+	TRANSACTION_ID_PREFIX,
+	TRANSACTION_SEQUENCE_INCREMENT,
+	type Transaction,
+	type TransactionOperationResult,
+} from "./transaction-model";
+import { validatePostTransactionInput } from "./transaction-validation";
 
-const ZERO_MINOR_UNITS = 0n;
-const ACCOUNT_KIND_ASSET = "asset";
-const ACCOUNT_KIND_LIABILITY = "liability";
 const OPENING_EVENT_SUFFIX = "-opening";
-
-function accountKind(
-	account: Account,
-): typeof ACCOUNT_KIND_ASSET | typeof ACCOUNT_KIND_LIABILITY {
-	return account.type === "credit-card"
-		? ACCOUNT_KIND_LIABILITY
-		: ACCOUNT_KIND_ASSET;
-}
-
-function summarize(
-	accounts: readonly Account[],
-	currency: Currency,
-): AccountSummary {
-	let availableMinorUnits = ZERO_MINOR_UNITS;
-	let outstandingMinorUnits = ZERO_MINOR_UNITS;
-
-	for (const account of accounts) {
-		if (account.currency !== currency) {
-			continue;
-		}
-
-		if (accountKind(account) === ACCOUNT_KIND_LIABILITY) {
-			outstandingMinorUnits += account.balance.minorUnits;
-			continue;
-		}
-
-		availableMinorUnits += account.balance.minorUnits;
-	}
-
-	return { currency, availableMinorUnits, outstandingMinorUnits };
-}
+const TRANSACTION_COLLECTION = "transaction";
+const transactionConfig = {
+	entity: type<Transaction>(),
+	collection: TRANSACTION_COLLECTION,
+} as const;
+const transactionCollection = { collection: TRANSACTION_COLLECTION } as const;
 
 export const AccountStore = signalStore(
 	{ providedIn: "root" },
 	withEntities<Account>(),
-	withState({ accountSequence: INITIAL_ACCOUNT_SEQUENCE }),
-	withComputed(({ entities }) => ({
+	withEntities(transactionConfig),
+	withState({
+		accountSequence: INITIAL_ACCOUNT_SEQUENCE,
+		transactionSequence: INITIAL_TRANSACTION_SEQUENCE,
+	}),
+	withComputed(({ entities, transactionEntities }) => ({
 		accountCount: () => entities().length,
-		copSummary: () => summarize(entities(), CURRENCIES[0]),
-		usdSummary: () => summarize(entities(), CURRENCIES[1]),
+		transactionCount: () => transactionEntities().length,
+		transactions: () => sortTransactionsNewestFirst(transactionEntities()),
+		copSummary: () => summarizeAccounts(entities(), CURRENCIES[0]),
+		usdSummary: () => summarizeAccounts(entities(), CURRENCIES[1]),
 	})),
 	withMethods((store) => ({
 		createAccount(input: CreateAccountInput): AccountOperationResult {
@@ -98,10 +89,54 @@ export const AccountStore = signalStore(
 
 			return { success: true, account };
 		},
+		postTransaction(input: PostTransactionInput): TransactionOperationResult {
+			const validation = validatePostTransactionInput(
+				input,
+				store.entities(),
+				store.transactionEntities(),
+			);
+
+			if (!validation.success) {
+				return validation;
+			}
+
+			const transactionId = `${TRANSACTION_ID_PREFIX}${store.transactionSequence()}`;
+			const transaction: Transaction = {
+				id: transactionId,
+				type: validation.value.type,
+				accountId: validation.value.accountId,
+				amount: validation.value.amount,
+				occurredAt: validation.value.occurredAt,
+				description: validation.value.description,
+			};
+			const nextTransactions = [...store.transactionEntities(), transaction];
+			const nextAccounts = projectAccounts(store.entities(), nextTransactions);
+
+			patchState(
+				store,
+				setAllEntities(nextAccounts),
+				addEntity(transaction, transactionConfig),
+				({ transactionSequence }) => ({
+					transactionSequence:
+						transactionSequence + TRANSACTION_SEQUENCE_INCREMENT,
+				}),
+			);
+
+			return { success: true, transaction };
+		},
 		resetSession(): void {
-			patchState(store, setAllEntities<Account>([]), {
-				accountSequence: INITIAL_ACCOUNT_SEQUENCE,
-			});
+			patchState(
+				store,
+				setAllEntities<Account>([]),
+				setAllEntities<Transaction, typeof TRANSACTION_COLLECTION>(
+					[],
+					transactionCollection,
+				),
+				{
+					accountSequence: INITIAL_ACCOUNT_SEQUENCE,
+					transactionSequence: INITIAL_TRANSACTION_SEQUENCE,
+				},
+			);
 		},
 	})),
 );

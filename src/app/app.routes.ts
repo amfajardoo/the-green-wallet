@@ -8,6 +8,13 @@ export const routes: Routes = [
 				({ AccountPage }) => AccountPage,
 			),
 	},
+	{
+		path: "transactions",
+		loadComponent: () =>
+			import("./features/transactions/transaction-page").then(
+				({ TransactionPage }) => TransactionPage,
+			),
+	},
 	{ path: "", pathMatch: "full", redirectTo: "accounts" },
 	{ path: "**", redirectTo: "accounts" },
 ];

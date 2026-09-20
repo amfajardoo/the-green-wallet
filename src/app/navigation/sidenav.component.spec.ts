@@ -71,4 +71,15 @@ describe("Sidenav", () => {
 		expect(navigation.textContent).toContain("Crea y revisa tus cuentas");
 		expect(navigation.textContent).not.toContain("Accounts");
 	});
+
+	it("exposes the movement workspace in the main navigation", () => {
+		const fixture = createFixture();
+		const navigation = fixture.nativeElement.querySelector(
+			".persistent-navigation",
+		) as HTMLElement;
+
+		expect(navigation.textContent).toContain("Movimientos");
+		expect(navigation.textContent).toContain("Registra ingresos y gastos");
+		expect(navigation.querySelector('a[href="/transactions"]')).toBeTruthy();
+	});
 });

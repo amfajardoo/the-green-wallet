@@ -23,7 +23,7 @@ git diff --check
 4. Create or use a USD credit card and post a USD expense; the liability increases in USD.
 5. Try an invalid amount, excess precision, blank description, unsupported account type, insufficient asset balance, or currency mismatch. The form shows a Spanish error and the account/history remain unchanged.
 6. Navigate with keyboard controls and confirm labels, focus, and semantic errors are available.
-7. Refresh within the session and confirm the in-memory account and transaction history remains available while the app session is alive.
+7. Move between the account and movement screens without reloading the browser and confirm the in-memory account and transaction history remains available during the active session.
 
 ## Explicit non-goals
 

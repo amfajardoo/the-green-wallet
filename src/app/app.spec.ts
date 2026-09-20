@@ -1,6 +1,7 @@
 import { TestBed } from "@angular/core/testing";
 import { provideRouter } from "@angular/router";
 import { App } from "./app";
+import { routes } from "./app.routes";
 
 describe("App", () => {
 	beforeEach(async () => {
@@ -27,5 +28,13 @@ describe("App", () => {
 		expect(compiled.textContent).toContain("Datos locales");
 		expect(compiled.textContent).toContain("Solo durante esta sesión");
 		expect(compiled.textContent).not.toContain("Local-first");
+	});
+
+	it("keeps the transaction workspace lazy and reachable", () => {
+		const transactionRoute = routes.find(
+			(route) => route.path === "transactions",
+		);
+
+		expect(transactionRoute?.loadComponent).toBeTypeOf("function");
 	});
 });

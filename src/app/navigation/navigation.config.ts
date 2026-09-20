@@ -7,4 +7,10 @@ export const NAVIGATION_DESTINATIONS: readonly NavigationDestination[] = [
 		route: "/accounts",
 		description: "Crea y revisa tus cuentas durante esta sesión.",
 	},
+	{
+		id: "transactions",
+		label: "Movimientos",
+		route: "/transactions",
+		description: "Registra ingresos y gastos con su efecto exacto.",
+	},
 ];

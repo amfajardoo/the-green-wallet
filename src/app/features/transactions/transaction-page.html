@@ -1,0 +1,228 @@
+<section class="transaction-page" aria-labelledby="transaction-page-title">
+	<header class="transaction-page-header">
+		<div>
+			<p class="eyebrow">Espacio de sesión / movimientos</p>
+			<h1 id="transaction-page-title">Registra lo que entra y lo que sale.</h1>
+			<p class="transaction-page-intro">
+				Cada movimiento explica tus saldos. Usa ingresos para cuentas de dinero disponible y
+				gastos para cuentas o tarjetas, siempre en la moneda correcta.
+			</p>
+		</div>
+		<div class="session-badge">
+			<span class="session-badge-dot" aria-hidden="true"></span>
+			<span>{{ store.transactionCount() }} movimientos en sesión</span>
+		</div>
+	</header>
+
+	<div class="transaction-layout">
+		<section class="transaction-form-card" aria-labelledby="transaction-form-title">
+			<div class="card-heading">
+				<div>
+					<p class="eyebrow">01 / Agregar movimiento</p>
+					<h2 id="transaction-form-title">Cuéntame qué pasó</h2>
+				</div>
+				<span class="optional-note">Se guarda durante esta sesión</span>
+			</div>
+
+			@if (store.accountCount() === 0) {
+				<div class="empty-guidance" role="status">
+					<strong>Primero crea una cuenta.</strong>
+					<p>Necesitas una cuenta para asociar el movimiento a su saldo.</p>
+				</div>
+			}
+
+			<form (submit)="onSubmit($event)" novalidate>
+				<div class="field-group">
+					<label for="transaction-type">Tipo de movimiento</label>
+					<select
+						id="transaction-type"
+						[formField]="transactionForm.type"
+						(change)="onTypeChange()"
+						[attr.aria-invalid]="transactionForm.type().invalid() ? 'true' : undefined"
+						[attr.aria-describedby]="
+							transactionForm.type().touched() && transactionForm.type().errors().length > 0
+								? 'transaction-type-error'
+								: undefined
+						"
+					>
+						@for (type of transactionTypes; track type) {
+							<option [value]="type">{{ typeLabels[type] }}</option>
+						}
+					</select>
+					<p class="field-hint">El ingreso aumenta un saldo disponible; el gasto lo reduce o aumenta una deuda.</p>
+					@if (transactionForm.type().touched() && transactionForm.type().errors().length > 0) {
+						<p id="transaction-type-error" class="field-error" role="alert">
+							{{ transactionForm.type().errors()[0].message }}
+						</p>
+					}
+				</div>
+
+				<div class="field-group">
+					<label for="transaction-account">Cuenta afectada</label>
+					<select
+						id="transaction-account"
+						[formField]="transactionForm.accountId"
+						(change)="syncCurrency()"
+						[attr.aria-invalid]="transactionForm.accountId().invalid() ? 'true' : undefined"
+						[attr.aria-describedby]="
+							transactionForm.accountId().touched() && transactionForm.accountId().errors().length > 0
+								? 'transaction-account-error'
+								: undefined
+						"
+					>
+						<option value="">Selecciona una cuenta</option>
+						@for (account of selectableAccounts(); track account.id) {
+							<option [value]="account.id">
+								{{ account.name }} · {{ accountTypeLabel(account.type) }} · {{ account.currency }}
+							</option>
+						}
+					</select>
+					@if (formModel().type === 'income') {
+						<p class="field-hint">Los ingresos se asocian a ahorros, corriente o efectivo.</p>
+					} @else {
+						<p class="field-hint">Un gasto en tarjeta aumenta el saldo pendiente de esa tarjeta.</p>
+					}
+					@if (transactionForm.accountId().touched() && transactionForm.accountId().errors().length > 0) {
+						<p id="transaction-account-error" class="field-error" role="alert">
+							{{ transactionForm.accountId().errors()[0].message }}
+						</p>
+					}
+				</div>
+
+				<div class="currency-preview" aria-live="polite">
+					<span>Moneda del movimiento</span>
+					<strong>{{ selectedCurrency() || 'Selecciona una cuenta' }}</strong>
+				</div>
+
+				<div class="field-group">
+					<label for="transaction-amount">Valor</label>
+					<input
+						id="transaction-amount"
+						type="text"
+						inputmode="decimal"
+						autocomplete="off"
+						placeholder="p. ej., 25000"
+						[formField]="transactionForm.amount"
+						[attr.aria-invalid]="transactionForm.amount().invalid() || fieldSubmissionError('amount') ? 'true' : undefined"
+						[attr.aria-describedby]="
+							transactionForm.amount().touched() && transactionForm.amount().errors().length > 0
+								? 'transaction-amount-error'
+								: 'transaction-amount-hint'
+						"
+					/>
+					<p id="transaction-amount-hint" class="field-hint">COP acepta enteros; USD admite máximo dos decimales.</p>
+					@if (transactionForm.amount().touched() && transactionForm.amount().errors().length > 0) {
+						<p id="transaction-amount-error" class="field-error" role="alert">
+							{{ transactionForm.amount().errors()[0].message }}
+						</p>
+					} @else if (fieldSubmissionError('amount'); as message) {
+						<p id="transaction-amount-error" class="field-error" role="alert">{{ message }}</p>
+					}
+				</div>
+
+				<div class="field-group">
+					<label for="transaction-date">Fecha y hora</label>
+					<input
+						id="transaction-date"
+						type="datetime-local"
+						[formField]="transactionForm.occurredAt"
+						[attr.aria-invalid]="transactionForm.occurredAt().invalid() ? 'true' : undefined"
+						[attr.aria-describedby]="
+							transactionForm.occurredAt().touched() && transactionForm.occurredAt().errors().length > 0
+								? 'transaction-date-error'
+								: undefined
+						"
+					/>
+					@if (transactionForm.occurredAt().touched() && transactionForm.occurredAt().errors().length > 0) {
+						<p id="transaction-date-error" class="field-error" role="alert">
+							{{ transactionForm.occurredAt().errors()[0].message }}
+						</p>
+					} @else if (fieldSubmissionError('occurredAt'); as message) {
+						<p id="transaction-date-error" class="field-error" role="alert">{{ message }}</p>
+					}
+				</div>
+
+				<div class="field-group">
+					<label for="transaction-description">Descripción</label>
+					<textarea
+						id="transaction-description"
+						rows="3"
+						placeholder="p. ej., Pago de nómina"
+						[formField]="transactionForm.description"
+						[attr.aria-invalid]="transactionForm.description().invalid() || fieldSubmissionError('description') ? 'true' : undefined"
+						[attr.aria-describedby]="
+							transactionForm.description().touched() && transactionForm.description().errors().length > 0
+								? 'transaction-description-error'
+								: undefined
+						"
+					></textarea>
+					@if (transactionForm.description().touched() && transactionForm.description().errors().length > 0) {
+						<p id="transaction-description-error" class="field-error" role="alert">
+							{{ transactionForm.description().errors()[0].message }}
+						</p>
+					} @else if (fieldSubmissionError('description'); as message) {
+						<p id="transaction-description-error" class="field-error" role="alert">{{ message }}</p>
+					}
+				</div>
+
+				@if (submissionError(); as error) {
+					<p class="form-error" role="alert">{{ error.message }}</p>
+				}
+				@if (successMessage(); as message) {
+					<p class="form-success" role="status">{{ message }}</p>
+				}
+
+				<button class="primary-action" type="submit" [disabled]="store.accountCount() === 0">
+					Guardar movimiento
+				</button>
+			</form>
+		</section>
+
+		<section class="transaction-history-card" aria-labelledby="transaction-history-title" aria-live="polite">
+			<div class="card-heading">
+				<div>
+					<p class="eyebrow">02 / Revisar tu historia</p>
+					<h2 id="transaction-history-title">Movimientos de esta sesión</h2>
+				</div>
+				<span class="transaction-count">{{ store.transactionCount() }} registrados</span>
+			</div>
+
+			@if (history().length === 0) {
+				<div class="list-empty">
+					<span class="list-empty-mark" aria-hidden="true">↗</span>
+					<h3>Aún no hay movimientos</h3>
+					<p>Cuando registres un ingreso o gasto, podrás entender aquí su efecto.</p>
+				</div>
+			} @else {
+				<ol class="transaction-list">
+					@for (item of history(); track item.transaction.id) {
+						<li class="transaction-list-item">
+							<div class="transaction-type-mark" [class.expense-mark]="item.transaction.type === 'expense'" aria-hidden="true">
+								{{ item.transaction.type === 'income' ? '↑' : '↓' }}
+							</div>
+							<div class="transaction-list-content">
+								<div class="transaction-list-topline">
+									<h3>{{ item.transaction.description }}</h3>
+									<span class="transaction-kind">{{ transactionTypeLabel(item.transaction.type) }}</span>
+								</div>
+								<p>
+									{{ item.account?.name || 'Cuenta no disponible' }} ·
+									{{ item.account ? accountTypeLabel(item.account.type) : 'Cuenta' }}
+								</p>
+								<small>{{ formatDate(item.transaction.occurredAt) }}</small>
+							</div>
+							<strong class="transaction-amount" [class.expense-amount]="item.transaction.type === 'expense'">
+								{{ formatAmount(item.transaction) }}
+							</strong>
+						</li>
+					}
+				</ol>
+			}
+
+			<p class="session-note">
+				<span class="session-note-icon" aria-hidden="true">↗</span>
+				Los movimientos son de solo lectura y viven durante esta sesión. La persistencia llegará después.
+			</p>
+		</section>
+	</div>
+</section>
